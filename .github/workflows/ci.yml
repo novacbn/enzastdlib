@@ -1,0 +1,56 @@
+# Shamelessly stolen from Deno's stdlib repository:
+# https://github.com/denoland/deno_std/blob/0d6701aca56bb115927344d7d2f0cefddfad4338/.github/workflows/ci.yml
+
+name: ci
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    check:
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Clone Repository
+              uses: actions/checkout@v3
+
+            - name: Configure Deno
+              uses: denoland/setup-deno@v1
+              with:
+                  deno-version: 1.33.0
+
+            - name: Download Dependencies
+              run: deno task deps:cache
+
+            - name: Check
+              run: deno task check
+
+    test:
+        runs-on: ${{ matrix.os }}
+        needs: check
+        timeout-minutes: 30
+        strategy:
+            fail-fast: false
+            matrix:
+                deno: [1.33.0]
+                os:
+                    - ubuntu-22.04
+                    - windows-2022
+                    - macOS-12
+
+        steps:
+            - name: Clone Repository
+              uses: actions/checkout@v3
+
+            - name: Configure Deno
+              uses: denoland/setup-deno@v1
+              with:
+                  deno-version: ${{ matrix.deno }}
+
+            - name: Download Dependencies
+              run: deno task deps:cache
+
+            - name: Test
+              run: deno task test

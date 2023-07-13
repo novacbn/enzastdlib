@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"allowImportingTsExtensions": true,
+		"noStrictGenericChecks": true,
+		"resolveJsonModule": true
+	},
+
+	"include": ["./**/*.ts"]
+}
