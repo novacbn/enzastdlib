@@ -2,7 +2,6 @@
  * Represents an `Object` type that has no properties.
  *
  * @example
- *
  * ```typescript
  * import type { EmptyObject } from 'https://deno.land/x/enzastdlib/collections/mod.ts';
  *
@@ -15,7 +14,6 @@ export type EmptyObject = Record<PropertyKey, never>;
  * Returns an `Object` where members with the given type are picked into a new `Object` type.
  *
  * @example
- *
  * ```typescript
  * import type { PickValues } from 'https://deno.land/x/enzastdlib/collections/mod.ts';
  *
@@ -39,7 +37,6 @@ export type PickValues<Obj, Value> = {
  * Returns an `Object` where members with the given type are omitted from a new `Object` type.
  *
  * @example
- *
  * ```typescript
  * import type { OmitValues } from 'https://deno.land/x/enzastdlib/collections/mod.ts';
  *
@@ -63,7 +60,6 @@ export type OmitValues<Obj, Value> = {
  * Returns all the values of an `Object` as a type union of its values.
  *
  * @example
- *
  * ```typescript
  * import type { ValueOf } from 'https://deno.land/x/enzastdlib/collections/mod.ts';
  *
@@ -82,7 +78,6 @@ export type ValueOf<Obj> = Obj[keyof Obj];
  * Represents an `Object` type that has unknown properties.
  *
  * @example
- *
  * ```typescript
  * import type { UnknownObject } from 'https://deno.land/x/enzastdlib/collections/mod.ts';
  *

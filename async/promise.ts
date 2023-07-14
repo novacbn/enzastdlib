@@ -23,7 +23,6 @@ export type Promisify<Value> = Value extends Promise<unknown> ? Value
  * @returns
  *
  * @example
- *
  * ```typescript
  * import {
  *     assertEquals,
