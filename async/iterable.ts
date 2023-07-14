@@ -10,8 +10,8 @@
  * @example
  *
  * ```typescript
- * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
- * import { arrayFromIterable } from "https://deno.land/x/enzastdlib/async/mod.ts";
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { arrayFromIterable } from 'https://deno.land/x/enzastdlib/async/mod.ts';
  *
  * async function* myGenerator(): AsyncGenerator<number> {
  *     yield Promise.resolve(1);

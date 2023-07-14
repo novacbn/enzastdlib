@@ -3,7 +3,7 @@
  *
  * @example
  * ```typescript
- * import type { Promisify } from "https://deno.land/x/enzastdlib/async/mod.ts";
+ * import type { Promisify } from 'https://deno.land/x/enzastdlib/async/mod.ts';
  *
  * function plainFunction(): number {
  *     return 1;
@@ -25,16 +25,19 @@ export type Promisify<Value> = Value extends Promise<unknown> ? Value
  * @example
  *
  * ```typescript
- * import { assertEquals, assertInstanceOf } from "https://deno.land/std/testing/asserts.ts";
- * import { makePromise } from "https://deno.land/x/enzastdlib/async/mod.ts";
- * import { assertTypeOf } from "https://deno.land/x/enzastdlib/testing/mod.ts";
+ * import {
+ *     assertEquals,
+ *     assertInstanceOf,
+ * } from 'https://deno.land/std/testing/asserts.ts';
+ * import { makePromise } from 'https://deno.land/x/enzastdlib/async/mod.ts';
+ * import { assertTypeOf } from 'https://deno.land/x/enzastdlib/testing/mod.ts';
  *
- * const {promise, resolve, reject} = makePromise<number>();
+ * const { promise, resolve, reject } = makePromise<number>();
  *
  * assertInstanceOf(promise, Promise);
  *
- * assertTypeOf(resolve, "function");
- * assertTypeOf(reject, "function");
+ * assertTypeOf(resolve, 'function');
+ * assertTypeOf(reject, 'function');
  *
  * resolve(42);
  *
