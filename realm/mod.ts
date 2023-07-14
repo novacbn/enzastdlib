@@ -10,9 +10,9 @@
  *
  * This module imports the following external libraries:
  *
+ * - https://github.com/denoland/deno_emit
  * - https://github.com/denoland/deno_std/tree/main/fs
  * - https://github.com/denoland/deno_std/tree/main/path
- * - https://github.com/esbuild/deno-esbuild
  *
  * @module
  */
