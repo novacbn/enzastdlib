@@ -4,11 +4,13 @@ Create command line tools with validation powered by [JSON Schema 2019-09](https
 
 ## Importing
 
-...
+```typescript
+import * as mod from 'https://deno.land/x/enzastdlib/commands/mod.ts';
+```
 
 ## Documentation
 
-...
+Visit the documentation at [Deno's module registry](https://deno.land/x/enzastdlib/commands/mod.ts?doc).
 
 ## Dependencies
 

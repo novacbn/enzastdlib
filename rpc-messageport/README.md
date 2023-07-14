@@ -4,8 +4,10 @@ Create fully typed and validated RPC clients and servers using [`MessagePort`](h
 
 ## Importing
 
-...
+```typescript
+import * as mod from 'https://deno.land/x/enzastdlib/rpc-messageport/mod.ts';
+```
 
 ## Documentation
 
-...
+Visit the documentation at [Deno's module registry](https://deno.land/x/enzastdlib/rpc-messageport/mod.ts?doc).
