@@ -9,7 +9,7 @@ export interface EvaluateModuleOptions<GlobalThisType = unknown> {
 	/**
 	 * Represents the `globalThis` global object exposed to the execution environment.
 	 *
-	 * **NOTE**: All members of this object will be exposed as globals to the evaluated
+	 * > **NOTE**: All members of this object will be exposed as globals to the evaluated
 	 * code.
 	 */
 	readonly globalThis?: GlobalThisType;

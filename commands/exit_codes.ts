@@ -10,8 +10,8 @@ export const EXIT_CODES = {
 	/**
 	 * Represents when the command was called successfully.
 	 *
-	 * **NOTE**: By default this value is used if no number
-	 * is returned by the commands callback.
+	 * > **NOTE**: By default this value is used if no number
+	 * > is returned by the commands callback.
 	 */
 	resolved: 0,
 
