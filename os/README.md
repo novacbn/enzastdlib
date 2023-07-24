@@ -27,3 +27,7 @@ The following functions are compatible with Deno only:
 This module imports the following external libraries:
 
 - https://github.com/denoland/deno_std/tree/main/path
+
+## Credits
+
+- https://github.com/adrg/xdg — Had concise documentation for polyfilling the XDG Base Directory spec on non-XDG platforms.
