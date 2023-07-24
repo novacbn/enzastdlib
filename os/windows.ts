@@ -12,6 +12,7 @@
  *     getUserCache(),
  *     'C:\\Users\\novacbn\\AppData\\Local'
  * );
+ * ```
  */
 export const getUserCache = () => Deno.env.get('LocalAppData')!;
 
@@ -29,6 +30,7 @@ export const getUserCache = () => Deno.env.get('LocalAppData')!;
  *     getUserConfig(),
  *     'C:\\Users\\novacbn\\AppData\\Roaming'
  * );
+ * ```
  */
 export const getUserConfig = () => Deno.env.get('AppData')!;
 
@@ -46,6 +48,7 @@ export const getUserConfig = () => Deno.env.get('AppData')!;
  *     getUserData(),
  *     'C:\\Users\\novacbn\\AppData\\Local'
  * );
+ * ```
  */
 export const getUserData = () => Deno.env.get('LocalAppData')!;
 
@@ -63,6 +66,7 @@ export const getUserData = () => Deno.env.get('LocalAppData')!;
  *     getUserHome(),
  *     'C:\\Users\\novacbn'
  * );
+ * ```
  */
 export const getUserHome = () => Deno.env.get('USERPROFILE')!;
 
@@ -80,5 +84,6 @@ export const getUserHome = () => Deno.env.get('USERPROFILE')!;
  *     getUserState(),
  *     'C:\\Users\\novacbn\\AppData\\Local'
  * );
+ * ```
  */
 export const getUserState = () => Deno.env.get('LocalAppData')!;

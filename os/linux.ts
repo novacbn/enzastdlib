@@ -14,6 +14,7 @@ import { join } from '../vendor/@deno-std-path.ts';
  *     getUserHome(),
  *     '/home/novacbn'
  * );
+ * ```
  */
 export const getUserHome = () => Deno.env.get('HOME')!;
 
@@ -32,6 +33,7 @@ export const getUserHome = () => Deno.env.get('HOME')!;
  *     getUserCache(),
  *     '/home/novacbn/.cache'
  * );
+ * ```
  */
 export const getUserCache = () =>
 	Deno.env.get('XDG_CACHE_HOME') ??
@@ -52,6 +54,7 @@ export const getUserCache = () =>
  *     getUserConfig(),
  *     '/home/novacbn/.config'
  * );
+ * ```
  */
 export const getUserConfig = () =>
 	Deno.env.get('XDG_CONFIG_HOME') ??
@@ -72,6 +75,7 @@ export const getUserConfig = () =>
  *     getUserData(),
  *     '/home/novacbn/.local/share'
  * );
+ * ```
  */
 export const getUserData = () =>
 	Deno.env.get('XDG_DATA_HOME') ??
@@ -92,6 +96,7 @@ export const getUserData = () =>
  *     getUserState(),
  *     '/home/novacbn/.local/state'
  * );
+ * ```
  */
 export const getUserState = () =>
 	Deno.env.get('XDG_STATE_HOME') ??
