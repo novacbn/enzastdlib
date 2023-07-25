@@ -65,7 +65,7 @@ export type OmitValues<Obj, Value> = {
  *
  * const MY_CONSTANT_OBJECT = {
  *     x: 1,
- * 	   y: 2,
+ *     y: 2,
  *     z: 3
  * } as const;
  *
