@@ -38,8 +38,6 @@ export function evaluateModule<
 		: [];
 	const blocklist_values = blocklist_keys.map(() => undefined);
 
-	console.error({ blocklist_keys });
-
 	const func = new Function(
 		...blocklist_keys,
 		...keys,
