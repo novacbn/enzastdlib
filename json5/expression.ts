@@ -11,9 +11,9 @@ import { JSON5_TYPE_NAMES } from './types.ts';
 /**
  * Returns an expression parsed following a simplified JSON5 syntax.
  *
- * > **NOTE**: If your specified type has start / end delimiters those are not required.
+ * > **NOTE**: Arrays do not need start / end delimiters.
  * >
- * > ex. For objects use `propA: 'Hello', propB: 'World!'` instead of `{ propA: 'Hello', propB: 'World!' }`
+ * > Use `'Hello', 'World!'` instead of `['Hello', 'World!']`.
  *
  * @param type
  * @param expression
@@ -31,26 +31,130 @@ import { JSON5_TYPE_NAMES } from './types.ts';
  *     parseJSON5Expression(JSON5_TYPE_NAMES.array, `'Hello', 'World!'`),
  *     ['Hello', 'World!']
  * );
+ * ```
+ */
+export function parseJSON5Expression(
+	type: (typeof JSON5_TYPE_NAMES)['array'],
+	expression: string,
+): JSON5Array;
+/**
+ * Returns an expression parsed following a simplified JSON5 syntax.
+ *
+ * @param type
+ * @param expression
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import {
+ *     JSON5_TYPE_NAMES,
+ *     parseJSON5Expression,
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
  *
  * assertEquals(
  *     parseJSON5Expression(JSON5_TYPE_NAMES.boolean, 'true'),
  *     true
  * );
+ * ```
+ */
+export function parseJSON5Expression(
+	type: (typeof JSON5_TYPE_NAMES)['boolean'],
+	expression: string,
+): boolean;
+/**
+ * Returns an expression parsed following a simplified JSON5 syntax.
+ *
+ * @param type
+ * @param expression
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import {
+ *     JSON5_TYPE_NAMES,
+ *     parseJSON5Expression,
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
  *
  * assertEquals(
  *     parseJSON5Expression(JSON5_TYPE_NAMES.null, 'null'),
  *     null
  * );
+ * ```
+ */
+export function parseJSON5Expression(
+	type: (typeof JSON5_TYPE_NAMES)['null'],
+	expression: string,
+): null;
+/**
+ * Returns an expression parsed following a simplified JSON5 syntax.
+ *
+ * @param type
+ * @param expression
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import {
+ *     JSON5_TYPE_NAMES,
+ *     parseJSON5Expression,
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
  *
  * assertEquals(
  *     parseJSON5Expression(JSON5_TYPE_NAMES.number, '42'),
  *     42
  * );
+ * ```
+ */
+export function parseJSON5Expression(
+	type: (typeof JSON5_TYPE_NAMES)['number'],
+	expression: string,
+): number;
+/**
+ * Returns an expression parsed following a simplified JSON5 syntax.
+ *
+ * > **NOTE**: Objects do not need start / end delimiters.
+ * >
+ * > Use `propA: 'Hello', propB: 'World!'` instead of `{ propA: 'Hello', propB: 'World!' }`
+ *
+ * @param type
+ * @param expression
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import {
+ *     JSON5_TYPE_NAMES,
+ *     parseJSON5Expression,
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
  *
  * assertEquals(
  *     parseJSON5Expression(JSON5_TYPE_NAMES.object, `propA: 'Hello', propB: 'World!'`),
  *     { propA: 'Hello', propB: 'World!' }
  * );
+ * ```
+ */
+export function parseJSON5Expression(
+	type: (typeof JSON5_TYPE_NAMES)['object'],
+	expression: string,
+): JSON5Object;
+/**
+ * Returns an expression parsed following a simplified JSON5 syntax.
+ *
+ * @param type
+ * @param expression
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import {
+ *     JSON5_TYPE_NAMES,
+ *     parseJSON5Expression,
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
  *
  * assertEquals(
  *     parseJSON5Expression(JSON5_TYPE_NAMES.string, 'Hello World!'),
@@ -58,26 +162,6 @@ import { JSON5_TYPE_NAMES } from './types.ts';
  * );
  * ```
  */
-export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['array'],
-	expression: string,
-): JSON5Array;
-export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['boolean'],
-	expression: string,
-): boolean;
-export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['null'],
-	expression: string,
-): null;
-export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['number'],
-	expression: string,
-): number;
-export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['object'],
-	expression: string,
-): JSON5Object;
 export function parseJSON5Expression(
 	type: (typeof JSON5_TYPE_NAMES)['string'],
 	expression: string,
