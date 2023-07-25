@@ -26,7 +26,7 @@ export type JSON5ExpressionRecord = Record<string, string | undefined>;
  * @param record
  * @returns
  *
- * @exanoke
+ * @example
  * **schema.ts**
  * ```typescript
  * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
