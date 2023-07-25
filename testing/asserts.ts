@@ -19,6 +19,18 @@ type BuiltinTypes =
 /**
  * Make an assertion that `actual` has the type of `expected_type`.
  * If not then throw.
+ *
+ * @param actual
+ * @param expected_type
+ * @param message
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertTypeOf } from 'https://deno.land/x/enzastdlib/testing/mod.ts';
+ *
+ * assertTypeOf('Hello World!', 'string');
+ * ```
  */
 export function assertTypeOf(
 	actual: unknown,
