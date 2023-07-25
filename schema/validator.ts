@@ -19,7 +19,7 @@ export interface Validator<Type = unknown> {
 	 *
 	 * @example
 	 * **schema.ts**
-	 * ```
+	 * ```typescript
 	 * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
 	 *
 	 * const MY_STRING_SCHEMA = {
@@ -68,7 +68,7 @@ export interface Validator<Type = unknown> {
 	 *
 	 * @example
 	 * **schema.ts**
-	 * ```
+	 * ```typescript
 	 * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
 	 *
 	 * const MY_STRING_SCHEMA = {
@@ -117,7 +117,7 @@ export interface Validator<Type = unknown> {
 	 *
 	 * @example
 	 * **schema.ts**
-	 * ```
+	 * ```typescript
 	 * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
 	 *
 	 * const MY_STRING_SCHEMA = {
@@ -168,7 +168,7 @@ export interface Validator<Type = unknown> {
  *
  * @example
  * **schema.ts**
- * ```
+ * ```typescript
  * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
  *
  * const MY_STRING_SCHEMA = {
