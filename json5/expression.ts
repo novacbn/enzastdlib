@@ -25,7 +25,7 @@ import { JSON5_TYPE_NAMES } from './types.ts';
  * import {
  *     JSON5_TYPE_NAMES,
  *     parseJSON5Expression,
- * } from 'https://deno.land/x/enzastdlib/expression/mod.ts';
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
  *
  * assertEquals(
  *     parseJSON5Expression(JSON5_TYPE_NAMES.array, `'Hello', 'World!'`),
