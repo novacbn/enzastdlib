@@ -6,33 +6,35 @@
 
 The following modules are considered public API ready for consumption:
 
-- [`@enzastdlib/async`](./async) — Utilities for working with asynchronous and `Promise`-based code.
-- [`@enzastdlib/collections`](./collections) — Utilities for working with collections like arrays and records.
-- [`@enzastdlib/commands`](./commands) — Create command line tools with validation powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
-- [`@enzastdlib/decorators`](./decorators) — Create function decorators that access metadata with a streamlined API.
-- [`@enzastdlib/environment`](./environment) — Parse and validate both environment variables and dotenv files powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
-- [`@enzastdlib/errors`](./errors) — General error objects that are used across `enzastdlib`.
-- [`@enzastdlib/path`](./events) — Create typed events with a typed version of `EventTarget`.
-- [`@enzastdlib/json5`](./json5) — Parse JSON5 documents and expressions.
-- [`@enzastdlib/os`](./os) — Utilities for abstracting away operating system specifics.
-- [`@enzastdlib/path`](./path) — Utilities for working with file system paths and URLs.
-- [`@enzastdlib/realm`](./realm) — Create custom JavaScript and TypeScript execution environments.
-- [`@enzastdlib/rpc`](./rpc) — Contains supplemental typing for creating fully typed and validated RPC clients and servers.
-- [`@enzastdlib/rpc-http`](./rpc-http) — Create fully typed and validated RPC clients and servers using HTTP as the transport.
-- [`@enzastdlib/rpc-messageport`](./rpc-messageport) — Create fully typed and validated RPC clients and servers using [`MessagePort`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort)-like API instances as the transport.
-- [`@enzastdlib/rpc-protocol`](./rpc-protocol) — Create fully typed and validated RPC clients and servers powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
-- [`@enzastdlib/rpc-streams`](./rpc-streams) — Create fully typed and validated RPC clients and servers using a pair of [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) / [`WritableStream`](https://developer.mozilla.org/en-US/docs/Web/API/WritableStream) instances as the transport.
-- [`@enzastdlib/schema`](./schema) — Create easy to use validators powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
-- [`@enzastdlib/strings`](./strings) — Utilities for working with strings.
-- [`@enzastdlib/testing`](./testing) — Utilities for working with Deno's testing API.
+- [`@enzastdlib/async`](https://deno.land/x/enzastdlib/async/mod.ts?doc) — Utilities for working with asynchronous and `Promise`-based code.
+- [`@enzastdlib/collections`](https://deno.land/x/enzastdlib/collections/mod.ts?doc) — Utilities for working with collections like arrays and records.
+- [`@enzastdlib/commands`](https://deno.land/x/enzastdlib/commands/mod.ts?doc) — Create command line tools with validation powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
+- [`@enzastdlib/decorators`](https://deno.land/x/enzastdlib/decorators/mod.ts?doc) — Create function decorators that access metadata with a streamlined API.
+- [`@enzastdlib/environment`](https://deno.land/x/enzastdlib/environment/mod.ts?doc) — Parse and validate both environment variables and dotenv files powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
+- [`@enzastdlib/errors`](https://deno.land/x/enzastdlib/errors/mod.ts?doc) — General error objects that are used across `enzastdlib`.
+- [`@enzastdlib/path`](https://deno.land/x/enzastdlib/events/mod.ts?doc) — Create typed events with a typed version of `EventTarget`.
+- [`@enzastdlib/json5`](https://deno.land/x/enzastdlib/json5/mod.ts?doc) — Parse JSON5 documents and expressions.
+- [`@enzastdlib/os`](https://deno.land/x/enzastdlib/os/mod.ts?doc) — Utilities for abstracting away operating system specifics.
+- [`@enzastdlib/path`](https://deno.land/x/enzastdlib/path/mod.ts?doc) — Utilities for working with file system paths and URLs.
+- [`@enzastdlib/realm`](https://deno.land/x/enzastdlib/realm/mod.ts?doc) — Create custom JavaScript and TypeScript execution environments.
+- [`@enzastdlib/rpc`](https://deno.land/x/enzastdlib/rpc/mod.ts?doc) — Contains supplemental typing for creating fully typed and validated RPC clients and servers.
+- [`@enzastdlib/rpc-http`](https://deno.land/x/enzastdlib/rpc-http/mod.ts?doc) — Create fully typed and validated RPC clients and servers using HTTP as the transport.
+- [`@enzastdlib/rpc-messageport`](https://deno.land/x/enzastdlib/rpc-messageport/mod.ts?doc) — Create fully typed and validated RPC clients and servers using [`MessagePort`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort)-like API instances as the transport.
+- [`@enzastdlib/rpc-protocol`](https://deno.land/x/enzastdlib/rpc-protocol/mod.ts?doc) — Create fully typed and validated RPC clients and servers powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
+- [`@enzastdlib/rpc-streams`](https://deno.land/x/enzastdlib/rpc-streams/mod.ts?doc) — Create fully typed and validated RPC clients and servers using a pair of [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) / [`WritableStream`](https://developer.mozilla.org/en-US/docs/Web/API/WritableStream) instances as the transport.
+- [`@enzastdlib/schema`](https://deno.land/x/enzastdlib/schema/mod.ts?doc) — Create easy to use validators powered by [JSON Schema 2019-09](https://json-schema.org/specification-links.html#draft-2019-09-formerly-known-as-draft-8).
+- [`@enzastdlib/strings`](https://deno.land/x/enzastdlib/strings/mod.ts?doc) — Utilities for working with strings.
+- [`@enzastdlib/testing`](https://deno.land/x/enzastdlib/testing/mod.ts?doc) — Utilities for working with Deno's testing API.
 
 ## Importing
 
-...
+```typescript
+import * as mod from 'https://deno.land/x/enzastdlib/.../mod.ts';
+```
 
 ## Documentation
 
-...
+Visit the documentation at [Deno's module registry](https://deno.land/x/enzastdlib?doc).
 
 ## Need Help?
 

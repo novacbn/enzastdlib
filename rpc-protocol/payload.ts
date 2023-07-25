@@ -42,8 +42,8 @@ export interface CallOptions {
 	 * Represents a signal that allows you to abort an ongoing call to the
 	 * server.
 	 *
-	 * **NOTE**: The client transport layer has to implement support for
-	 * this feature. ex. whatever implements `ClientOptions.processProcedure`.
+	 * > **NOTE**: The client transport layer has to implement support for
+	 * > this feature. ex. whatever implements `ClientOptions.processProcedure`.
 	 */
 	readonly signal?: AbortSignal;
 }

@@ -8,6 +8,56 @@ import type {
 } from './types.ts';
 import { JSON5_TYPE_NAMES } from './types.ts';
 
+/**
+ * Returns an expression parsed following a simplified JSON5 syntax.
+ *
+ * > **NOTE**: If your specified type has start / end delimiters those are not required.
+ * >
+ * > ex. For objects use `propA: 'Hello', propB: 'World!'` instead of `{ propA: 'Hello', propB: 'World!' }`
+ *
+ * @param type
+ * @param expression
+ * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import {
+ *     JSON5_TYPE_NAMES,
+ *     parseJSON5Expression,
+ * } from 'https://deno.land/x/enzastdlib/json5/mod.ts';
+ *
+ * assertEquals(
+ *     parseJSON5Expression(JSON5_TYPE_NAMES.array, `'Hello', 'World!'`),
+ *     ['Hello', 'World!']
+ * );
+ *
+ * assertEquals(
+ *     parseJSON5Expression(JSON5_TYPE_NAMES.boolean, 'true'),
+ *     true
+ * );
+ *
+ * assertEquals(
+ *     parseJSON5Expression(JSON5_TYPE_NAMES.null, 'null'),
+ *     null
+ * );
+ *
+ * assertEquals(
+ *     parseJSON5Expression(JSON5_TYPE_NAMES.number, '42'),
+ *     42
+ * );
+ *
+ * assertEquals(
+ *     parseJSON5Expression(JSON5_TYPE_NAMES.object, `propA: 'Hello', propB: 'World!'`),
+ *     { propA: 'Hello', propB: 'World!' }
+ * );
+ *
+ * assertEquals(
+ *     parseJSON5Expression(JSON5_TYPE_NAMES.string, 'Hello World!'),
+ *     'Hello World!'
+ * );
+ * ```
+ */
 export function parseJSON5Expression(
 	type: (typeof JSON5_TYPE_NAMES)['array'],
 	expression: string,

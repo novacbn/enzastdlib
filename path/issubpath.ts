@@ -6,6 +6,17 @@ import { relative } from '../vendor/@deno-std-path.ts';
  * @param parent
  * @param child
  * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { isSubPath } from 'https://deno.land/x/enzastdlib/path/mod.ts';
+ *
+ * assertEquals(
+ *     isSubPath('/home/novacbn', '/home/novacbn/Pictures'),
+ *     true
+ * );
+ * ```
  */
 export function isSubPath(parent: string, child: string): boolean {
 	const relative_path = relative(parent, child);

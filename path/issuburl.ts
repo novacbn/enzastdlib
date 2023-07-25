@@ -6,6 +6,20 @@ import { relativePathname } from './relativepathname.ts';
  * @param parent
  * @param child
  * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { isSubURL } from 'https://deno.land/x/enzastdlib/path/mod.ts';
+ *
+ * const URL_A = new URL("https://example.domain/assets");
+ * const URL_B = new URL("https://example.domain/assets/scripts/main.js");
+ *
+ * assertEquals(
+ *     isSubURL(URL_A, URL_B),
+ *     true
+ * );
+ * ```
  */
 export function isSubURL(parent: URL, child: URL): boolean {
 	if (parent.origin !== child.origin) return false;

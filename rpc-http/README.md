@@ -8,11 +8,13 @@ Create fully typed and validated RPC clients and servers using HTTP as the trans
 
 ## Importing
 
-...
+```typescript
+import * as mod from 'https://deno.land/x/enzastdlib/rpc-http/mod.ts';
+```
 
-## Description
+## Documentation
 
-...
+Visit the documentation at [Deno's module registry](https://deno.land/x/enzastdlib/rpc-http/mod.ts?doc).
 
 ## Compatibility
 

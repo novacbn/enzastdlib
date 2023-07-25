@@ -1,6 +1,9 @@
 /**
  * Utilities for abstracting away operating system specifics.
  *
+ * > **NOTE**: You can import individual platforms via `import { ... } from 'https://deno.land/x/enzastdlib/os/${PLATFORM}.ts';`
+ * > or have the platform be auto-detected via `import { ... } from 'https://deno.land/x/enzastdlib/os/mod.ts';`.
+ *
  * @module
  */
 

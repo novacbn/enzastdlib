@@ -4,11 +4,13 @@ Parse and validate both environment variables and dotenv files powered by [JSON 
 
 ## Importing
 
-...
+```typescript
+import * as mod from 'https://deno.land/x/enzastdlib/environment/mod.ts';
+```
 
 ## Documentation
 
-...
+Visit the documentation at [Deno's module registry](https://deno.land/x/enzastdlib/environment/mod.ts?doc).
 
 ## Compatibility
 
