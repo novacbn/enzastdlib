@@ -143,7 +143,7 @@ export interface Validator<Type = unknown> {
 	 * assertEquals(
 	 *     validator.instanceOf('Hello World!'),
 	 *     true,
-	 * )
+	 * );
 	 *
 	 * assertThrows(
 	 *     () => validator.instanceOf(''),
