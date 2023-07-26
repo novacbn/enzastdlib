@@ -1,7 +1,8 @@
 import type { FunctionBox } from './function.ts';
 
 /**
- * Represents an object of methods that handles metadata on functions.
+ * Represents a decorator for accessing scoped metadata on functions made
+ * by `makeDecorator`.
  */
 export interface Decorator<
 	Func extends FunctionBox,
