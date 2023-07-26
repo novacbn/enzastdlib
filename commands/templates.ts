@@ -9,7 +9,7 @@ import {
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -28,7 +28,7 @@ export const TEMPLATE_EXAMPLE = (
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -40,7 +40,7 @@ export const TEMPLATE_ERROR_MALFORMED_FLAGS = () =>
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -53,7 +53,7 @@ export const TEMPLATE_ERROR_MISSING_SCHEMA = (
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -66,7 +66,7 @@ export const TEMPLATE_ERROR_UNRECOGNIZED_COMMAND = (
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -79,7 +79,7 @@ export const TEMPLATE_FLAGS = (
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -90,7 +90,7 @@ export const TEMPLATE_HEADER_ARGUMENTS = () => `${bold('Arguments')}:`;
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -101,7 +101,7 @@ export const TEMPLATE_HEADER_COMMANDS = () => `${bold('Commands')}:`;
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -112,7 +112,7 @@ export const TEMPLATE_HEADER_EXAMPLES = () => `${bold('Examples')}:`;
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -123,7 +123,7 @@ export const TEMPLATE_HEADER_OPTIONS = () => `${bold('Options')}:`;
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -135,7 +135,7 @@ export const TEMPLATE_LIST_COMMAND = ({ command }: { command: string }) =>
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -154,7 +154,7 @@ export const TEMPLATE_LIST_OPTION = (
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -168,7 +168,7 @@ export const TEMPLATE_USAGE_BINARY = ({ binary }: { binary: string }) =>
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -209,7 +209,7 @@ export const TEMPLATE_USAGE_COMMAND = (
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -221,7 +221,7 @@ export const TEMPLATE_TEXT_CONTACT = () =>
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
@@ -233,7 +233,7 @@ export const TEMPLATE_TEXT_INFORMATION = () =>
 
 /**
  * Represents a localization message function used by
- * the `@enzastd/commands` module.
+ * the `@enzastdlib/commands` module.
  *
  * @private
  *
