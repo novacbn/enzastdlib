@@ -27,14 +27,16 @@ import { makeValidator } from '../schema/mod.ts';
  * ```typescript
  * import type { JSONSchema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
  *
- * const MY_STRING_SCHEMA = {
+ * export const MY_STRING_SCHEMA = {
  *     type: 'object',
  *
  *     properties: {
- *         type: 'string',
+ *         MY_STRING: {
+ *             type: 'string',
  *
- *         minLength: 1,
- *     }
+ *             minLength: 1,
+ *         },
+ *     },
  * } as const satisfies JSONSchema;
  * ```
  *
@@ -82,17 +84,19 @@ export function testEnvironment(
  * ```typescript
  * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
  *
- * const MY_STRING_SCHEMA = {
+ * export const MY_STRING_SCHEMA = {
  *     type: 'object',
  *
  *     properties: {
- *         type: 'string',
+ *         MY_STRING: {
+ *             type: 'string',
  *
- *         minLength: 1,
- *     }
+ *             minLength: 1,
+ *         },
+ *     },
  * } as const satisfies JSONSchema;
  *
- * type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
+ * export type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
  * ```
  *
  * **mod.ts**
