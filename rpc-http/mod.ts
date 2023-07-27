@@ -13,6 +13,5 @@
  */
 
 export * from './client.ts';
-export * from './procedure.ts';
 export * from './protocol.ts';
 export * from './server.ts';

@@ -3,12 +3,23 @@ import type { EmptyObject } from '../collections/object.ts';
 import type { Client, ClientOptions } from '../rpc/mod.ts';
 
 import type {
+	CallOptions,
 	NotificationRecord,
 	ProcedureRecord,
 } from '../rpc-protocol/mod.ts';
 import { makeBrokerClient } from '../rpc-protocol/mod.ts';
 
 import { PROTOCOL_METHOD } from './protocol.ts';
+
+/**
+ * Represents HTTP-related call options that can be passed when invoking.
+ */
+export interface HTTPCallOptions extends CallOptions {
+	/**
+	 * Represents custom `fetch` options that can be passed to RPC calls.
+	 */
+	http?: Omit<RequestInit, 'body' | 'method' | 'signal'>;
+}
 
 /**
  * Represents options passable to `makeHTTPClient`.
