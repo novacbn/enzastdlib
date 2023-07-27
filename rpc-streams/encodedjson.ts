@@ -1,4 +1,4 @@
-import { JsonValue } from '../vendor/@deno-std-json.ts';
+import type { JsonValue } from '../vendor/@deno-std-json.ts';
 
 // NOTE: If we use a normal `ReadableStream` with `TextLineStream`,
 // `TextDecoderStream`, and `JSONParseStream` via `ReadableStream.pipeline`
@@ -9,14 +9,42 @@ import { JsonValue } from '../vendor/@deno-std-json.ts';
 // So, since we needed to not junk the original stream the following
 // custom implementation was made that directly uses a reader.
 
+/**
+ * Represents a generator made by `makeEncodedJSONGenerator`.
+ *
+ * @private
+ */
 export type EncodedJSONGenerator = AsyncGenerator<JsonValue, void, unknown>;
 
+/**
+ * Represents a Streams API writer made by `makeEncodedJSONWriter`.
+ *
+ * @private
+ */
 export interface EncodedJSONWriter {
+	/**
+	 * Releases the writing lock on a `WritableStream`.
+	 *
+	 * @returns
+	 */
 	readonly releaseLock: () => void;
 
+	/**
+	 * Writes JSON-compatible data to a `WritableStream`.
+	 *
+	 * @param data
+	 * @returns
+	 */
 	readonly write: (data: unknown) => Promise<void>;
 }
 
+/**
+ * Returns a generator that reads newline-delimited JSON chunks from a `ReadableStream`.
+ *
+ * @param readable
+ *
+ * @private
+ */
 export async function* makeEncodedJSONGenerator(
 	readable: ReadableStream<Uint8Array>,
 ): EncodedJSONGenerator {
@@ -55,6 +83,15 @@ export async function* makeEncodedJSONGenerator(
 	}
 }
 
+/**
+ * Returns a writer that writes JSON-compatible data as newline-delimited
+ * chunks into a `WritableStream`.
+ *
+ * @param writable
+ * @returns
+ *
+ * @private
+ */
 export function makeEncodedJSONWriter(
 	writable: WritableStream<Uint8Array>,
 ): EncodedJSONWriter {
