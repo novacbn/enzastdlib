@@ -42,7 +42,7 @@ export type StreamClient<
 >;
 
 /**
- * Makes a `MessagePort` client that can communicate to a server in enzastdlib's RPC protocol.
+ * Makes a Streams API client that can communicate to a server in enzastdlib's RPC protocol.
  *
  * @param options
  * @returns
