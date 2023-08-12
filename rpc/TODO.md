@@ -1,7 +1,5 @@
 # TODO
 
-- Add docstrings.
-
 - Rename to `rpc-impl`.
 
   - Given that this module is mainly used for common transport implementations it makes sense and less confusing.
