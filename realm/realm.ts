@@ -69,6 +69,27 @@ export interface RealmOptions<GlobalThisType = unknown> {
 /**
  * Creates a new custom JavaScript / TypeScript execution environment.
  *
+ * @example
+ * **myscript.js**
+ * ```javascript
+ * export const message = `Hello ${name}!`;
+ * ```
+ *
+ * **mod.ts**
+ * ```typescript
+ * import { makeRealm } from 'https://deno.land/x/enzastdlib/realm/mod.ts';
+ *
+ * const realm = makeRealm({
+ *     environment: {
+ *         globalThis: {
+ *             name: 'World',
+ *         },
+ *     },
+ * });
+ *
+ * const {message} = realm.importModule('./myscript.js');
+ * ```
+ *
  * @param options
  * @returns
  */

@@ -7,6 +7,8 @@ import type { UnknownObject } from '../collections/mod.ts';
  * Represents a list of globals that are in available in Deno's runtime.
  *
  * > **WARNING**: This list is up to date as of Deno v1.33.0.
+ *
+ * @private
  */
 const BLOCKLIST_DENO = [
 	'Deno',
@@ -52,6 +54,8 @@ const BLOCKLIST_DENO = [
 /**
  * Generates a blocklist of globals in Deno's runtime that need to be
  * removed to ensure proper sandboxing.
+ *
+ * @private
  *
  * @param globals
  */
