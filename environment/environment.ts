@@ -54,12 +54,12 @@ import { makeValidator } from '../schema/mod.ts';
  * ```
  */
 export function testEnvironment(
-	schema: JSONSchemaObject,
+    schema: JSONSchemaObject,
 ): Error[] | undefined {
-	const env = parseJSON5ExpressionRecord(schema, Deno.env.toObject());
-	const validator = makeValidator(schema);
+    const env = parseJSON5ExpressionRecord(schema, Deno.env.toObject());
+    const validator = makeValidator(schema);
 
-	return validator.test(env);
+    return validator.test(env);
 }
 
 /**
@@ -114,21 +114,21 @@ export function testEnvironment(
  * ```
  */
 export function validateEnvironment<Type>(
-	schema: JSONSchemaObject,
+    schema: JSONSchemaObject,
 ): Type {
-	const env = parseJSON5ExpressionRecord<Type>(schema, Deno.env.toObject());
-	const validator = makeValidator<Type>(schema);
+    const env = parseJSON5ExpressionRecord<Type>(schema, Deno.env.toObject());
+    const validator = makeValidator<Type>(schema);
 
-	const errors = validator.test(env);
-	if (errors) {
-		throw new ValidationError(
-			`bad environment variables to 'validate' (environment variables failed to validate against JSON Schema):\n\n${
-				errors
-					.map((error) => `${error.property}: ${error.message}`)
-					.join('\n')
-			}`,
-		);
-	}
+    const errors = validator.test(env);
+    if (errors) {
+        throw new ValidationError(
+            `bad environment variables to 'validate' (environment variables failed to validate against JSON Schema):\n\n${
+                errors
+                    .map((error) => `${error.property}: ${error.message}`)
+                    .join('\n')
+            }`,
+        );
+    }
 
-	return env;
+    return env;
 }

@@ -5,42 +5,42 @@ import { PAYLOAD_TYPES } from './payload.ts';
 import { PROTOCOL_VERSION } from './protocol.ts';
 
 export const SCHEMA_PROCEDURE = {
-	type: 'object',
-	required: ['enzastdlib', 'type', 'id', 'procedure'],
+    type: 'object',
+    required: ['enzastdlib', 'type', 'id', 'procedure'],
 
-	additionalProperties: false,
+    additionalProperties: false,
 
-	properties: {
-		enzastdlib: {
-			type: 'string',
-			enum: [PROTOCOL_VERSION],
-		},
+    properties: {
+        enzastdlib: {
+            type: 'string',
+            enum: [PROTOCOL_VERSION],
+        },
 
-		type: {
-			type: 'string',
-			enum: [PAYLOAD_TYPES.procedure],
-		},
+        type: {
+            type: 'string',
+            enum: [PAYLOAD_TYPES.procedure],
+        },
 
-		id: {
-			type: 'string',
-		},
+        id: {
+            type: 'string',
+        },
 
-		metadata: {
-			type: 'object',
-		},
+        metadata: {
+            type: 'object',
+        },
 
-		procedure: {
-			type: 'string',
+        procedure: {
+            type: 'string',
 
-			minLength: 1,
-		},
+            minLength: 1,
+        },
 
-		parameters: {
-			type: 'object',
+        parameters: {
+            type: 'object',
 
-			additionalProperties: true,
-		},
-	},
+            additionalProperties: true,
+        },
+    },
 } as const satisfies JSONSchema;
 
 export type Procedure = typeofschema<typeof SCHEMA_PROCEDURE>;

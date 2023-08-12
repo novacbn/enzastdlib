@@ -5,42 +5,42 @@ import { PAYLOAD_TYPES } from './payload.ts';
 import { PROTOCOL_VERSION } from './protocol.ts';
 
 export const SCHEMA_NOTIFICATION = {
-	type: 'object',
-	required: ['enzastdlib', 'type', 'notification'],
+    type: 'object',
+    required: ['enzastdlib', 'type', 'notification'],
 
-	additionalProperties: false,
+    additionalProperties: false,
 
-	properties: {
-		enzastdlib: {
-			type: 'string',
-			enum: [PROTOCOL_VERSION],
-		},
+    properties: {
+        enzastdlib: {
+            type: 'string',
+            enum: [PROTOCOL_VERSION],
+        },
 
-		type: {
-			type: 'string',
-			enum: [PAYLOAD_TYPES.notification],
-		},
+        type: {
+            type: 'string',
+            enum: [PAYLOAD_TYPES.notification],
+        },
 
-		metadata: {
-			type: 'object',
-		},
+        metadata: {
+            type: 'object',
+        },
 
-		notification: {
-			type: 'string',
+        notification: {
+            type: 'string',
 
-			minLength: 1,
-		},
+            minLength: 1,
+        },
 
-		parameters: {
-			type: 'object',
+        parameters: {
+            type: 'object',
 
-			additionalProperties: true,
-		},
-	},
+            additionalProperties: true,
+        },
+    },
 } as const satisfies JSONSchema;
 
 export type Notification = typeofschema<typeof SCHEMA_NOTIFICATION>;
 
 export const VALIDATOR_NOTIFICATION = makeValidator<Notification>(
-	SCHEMA_NOTIFICATION,
+    SCHEMA_NOTIFICATION,
 );

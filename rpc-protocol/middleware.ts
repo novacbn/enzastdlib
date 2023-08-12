@@ -10,37 +10,37 @@ import type { ProcedureCallback } from './procedure.ts';
 import type { Response } from './response.schema.ts';
 
 export type PerCallMiddlewareCallback = (
-	payload: Payload | Notification | Procedure,
-	callback: PayloadCallback | NotificationCallback | ProcedureCallback,
+    payload: Payload | Notification | Procedure,
+    callback: PayloadCallback | NotificationCallback | ProcedureCallback,
 ) => Promise<Error | Response | true | void> | Error | Response | true | void;
 
 export type ServerMiddlewareCallback = (
-	payload: Payload,
+    payload: Payload,
 ) => Promise<Error | Response | true | void> | Error | Response | true | void;
 
 export const middlewares = makeDecorator<
-	readonly (PerCallMiddlewareCallback)[],
-	NotificationCallback | ProcedureCallback
+    readonly (PerCallMiddlewareCallback)[],
+    NotificationCallback | ProcedureCallback
 >((func, _middlewares) => {
-	middlewares.set(func, _middlewares);
+    middlewares.set(func, _middlewares);
 });
 
 export async function applyMiddlewareCallbacks(
-	func: NotificationCallback | ProcedureCallback,
-	payload: Payload,
+    func: NotificationCallback | ProcedureCallback,
+    payload: Payload,
 ) {
-	if (middlewares.has(func)) {
-		const callbacks = middlewares.get(func)!;
+    if (middlewares.has(func)) {
+        const callbacks = middlewares.get(func)!;
 
-		for (const index in callbacks) {
-			const callback = callbacks[index];
+        for (const index in callbacks) {
+            const callback = callbacks[index];
 
-			const response = await callback(
-				payload,
-				func as PayloadCallback,
-			);
+            const response = await callback(
+                payload,
+                func as PayloadCallback,
+            );
 
-			if (response) return response;
-		}
-	}
+            if (response) return response;
+        }
+    }
 }

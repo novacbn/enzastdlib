@@ -15,14 +15,14 @@
  * ```
  */
 export type CommandCallback<
-	OptionsType extends // HACK: We cannot effectively type flags here since the
-	// JSON Schema's parsed typed will be fully defined with
-	// no index signatures.
-	//
-	// deno-lint-ignore no-explicit-any
-	any = any,
+    OptionsType extends // HACK: We cannot effectively type flags here since the
+    // JSON Schema's parsed typed will be fully defined with
+    // no index signatures.
+    //
+    // deno-lint-ignore no-explicit-any
+    any = any,
 > = (
-	options: OptionsType,
+    options: OptionsType,
 ) => void | number | Promise<void | number>;
 
 /**

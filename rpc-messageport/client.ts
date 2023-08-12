@@ -1,10 +1,10 @@
 import type { Client, ClientOptions } from '../rpc/mod.ts';
 
 import type {
-	NotificationRecord,
-	Payload,
-	ProcedureRecord,
-	Response,
+    NotificationRecord,
+    Payload,
+    ProcedureRecord,
+    Response,
 } from '../rpc-protocol/mod.ts';
 import { makeBrokerClient, VALIDATOR_PAYLOAD } from '../rpc-protocol/mod.ts';
 
@@ -15,15 +15,15 @@ import { EmptyObject } from '../collections/object.ts';
  * Represents options passable to `makeMessagePortClient`.
  */
 export interface MessagePortClientOptions extends ClientOptions {
-	readonly port: MessagePortLike;
+    readonly port: MessagePortLike;
 }
 
 /**
  * Represents a `MessagePort` client made by `makeMessagePortClient`.
  */
 export type MessagePortClient<
-	Notifications extends NotificationRecord<false>,
-	Procedures extends ProcedureRecord<false>,
+    Notifications extends NotificationRecord<false>,
+    Procedures extends ProcedureRecord<false>,
 > = Client<Notifications, Procedures>;
 
 /**
@@ -115,83 +115,83 @@ export type MessagePortClient<
  * ```
  */
 export function makeMessagePortClient<
-	Procedures extends ProcedureRecord = EmptyObject,
-	Notifications extends NotificationRecord = EmptyObject,
+    Procedures extends ProcedureRecord = EmptyObject,
+    Notifications extends NotificationRecord = EmptyObject,
 >(
-	options: MessagePortClientOptions,
+    options: MessagePortClientOptions,
 ): MessagePortClient<Notifications, Procedures> {
-	const { port } = options;
+    const { port } = options;
 
-	let is_reading = false;
+    let is_reading = false;
 
-	const pending_responses = new Map<
-		string,
-		((payload: Payload) => void) | undefined
-	>();
+    const pending_responses = new Map<
+        string,
+        ((payload: Payload) => void) | undefined
+    >();
 
-	function getPayload<Ret extends Payload = Payload>(
-		id: string,
-		signal?: AbortSignal,
-	): Promise<Ret> {
-		return new Promise<Ret>((resolve, reject) => {
-			function onAbort(_event: Event) {
-				pending_responses.delete(id);
-				signal!.removeEventListener('abort', onAbort);
+    function getPayload<Ret extends Payload = Payload>(
+        id: string,
+        signal?: AbortSignal,
+    ): Promise<Ret> {
+        return new Promise<Ret>((resolve, reject) => {
+            function onAbort(_event: Event) {
+                pending_responses.delete(id);
+                signal!.removeEventListener('abort', onAbort);
 
-				reject(signal!.reason);
-			}
+                reject(signal!.reason);
+            }
 
-			signal?.addEventListener('abort', onAbort);
+            signal?.addEventListener('abort', onAbort);
 
-			// @ts-ignore - HACK:
-			pending_responses.set(id, resolve);
-			startReading();
-		});
-	}
+            // @ts-ignore - HACK:
+            pending_responses.set(id, resolve);
+            startReading();
+        });
+    }
 
-	function onMessage(event: MessageEvent): void {
-		const { data: payload } = event;
+    function onMessage(event: MessageEvent): void {
+        const { data: payload } = event;
 
-		if (!VALIDATOR_PAYLOAD.instanceOf(payload)) return;
+        if (!VALIDATOR_PAYLOAD.instanceOf(payload)) return;
 
-		const { id } = payload;
-		if (!id) return;
+        const { id } = payload;
+        if (!id) return;
 
-		const resolve = pending_responses.get(id);
-		if (!resolve) return;
+        const resolve = pending_responses.get(id);
+        if (!resolve) return;
 
-		resolve(payload);
+        resolve(payload);
 
-		pending_responses.delete(id);
-		if (pending_responses.size === 0) {
-			port.removeEventListener('message', onMessage);
-			is_reading = false;
-		}
-	}
+        pending_responses.delete(id);
+        if (pending_responses.size === 0) {
+            port.removeEventListener('message', onMessage);
+            is_reading = false;
+        }
+    }
 
-	function startReading(): void {
-		if (is_reading) return;
+    function startReading(): void {
+        if (is_reading) return;
 
-		port.addEventListener('message', onMessage);
-		is_reading = true;
-	}
+        port.addEventListener('message', onMessage);
+        is_reading = true;
+    }
 
-	const { notifications, procedures } = makeBrokerClient<Procedures>({
-		...options,
+    const { notifications, procedures } = makeBrokerClient<Procedures>({
+        ...options,
 
-		processNotification: (notification, _options) => {
-			port.postMessage(notification);
-		},
+        processNotification: (notification, _options) => {
+            port.postMessage(notification);
+        },
 
-		processProcedure: (procedure, options) => {
-			port.postMessage(procedure);
+        processProcedure: (procedure, options) => {
+            port.postMessage(procedure);
 
-			return getPayload<Response>(procedure.id, options.signal);
-		},
-	});
+            return getPayload<Response>(procedure.id, options.signal);
+        },
+    });
 
-	return {
-		notifications,
-		procedures,
-	};
+    return {
+        notifications,
+        procedures,
+    };
 }

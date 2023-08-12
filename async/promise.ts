@@ -15,7 +15,7 @@
  * ```
  */
 export type Promisify<Value> = Value extends Promise<unknown> ? Value
-	: Promise<Value>;
+    : Promise<Value>;
 
 /**
  * Returns a `Promise` instance along with its resolve and reject functions.
@@ -44,21 +44,21 @@ export type Promisify<Value> = Value extends Promise<unknown> ? Value
  * ```
  */
 export function makePromise<Value = void>(): {
-	promise: Promise<Value>;
-	resolve: (value: Value) => void;
-	reject: (reason?: unknown) => void;
+    promise: Promise<Value>;
+    resolve: (value: Value) => void;
+    reject: (reason?: unknown) => void;
 } {
-	let resolve: (value: Value) => void;
-	let reject: (reason?: unknown) => void;
+    let resolve: (value: Value) => void;
+    let reject: (reason?: unknown) => void;
 
-	const promise = new Promise<Value>((_resolve, _reject) => {
-		resolve = _resolve;
-		reject = _reject;
-	});
+    const promise = new Promise<Value>((_resolve, _reject) => {
+        resolve = _resolve;
+        reject = _reject;
+    });
 
-	return {
-		resolve: resolve!,
-		reject: reject!,
-		promise,
-	};
+    return {
+        resolve: resolve!,
+        reject: reject!,
+        promise,
+    };
 }

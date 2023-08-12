@@ -3,42 +3,42 @@ import type { Server, ServerOptions } from '../rpc/mod.ts';
 import { makeBrokerServer } from '../rpc-protocol/mod.ts';
 
 import {
-	makeEncodedJSONGenerator,
-	makeEncodedJSONWriter,
+    makeEncodedJSONGenerator,
+    makeEncodedJSONWriter,
 } from './encodedjson.ts';
 
 /**
  * Represents options passable to `makeStreamServer`.
  */
 export interface StreamServerOptions extends ServerOptions {
-	/**
-	 * Represents the `ReadableStream` being used as input.
-	 */
-	readonly readable: ReadableStream<Uint8Array>;
+    /**
+     * Represents the `ReadableStream` being used as input.
+     */
+    readonly readable: ReadableStream<Uint8Array>;
 
-	/**
-	 * Represents the `WritableStream` being used as output.
-	 */
-	readonly writable: WritableStream<Uint8Array>;
+    /**
+     * Represents the `WritableStream` being used as output.
+     */
+    readonly writable: WritableStream<Uint8Array>;
 }
 
 /**
  * Represents a Streams API server made by `makeStreamServer`.
  */
 export interface StreamServer extends Server {
-	/**
-	 * Closes the RPC server.
-	 *
-	 * @returns
-	 */
-	readonly close: () => void;
+    /**
+     * Closes the RPC server.
+     *
+     * @returns
+     */
+    readonly close: () => void;
 
-	/**
-	 * Starts the RPC server.
-	 *
-	 * @returns
-	 */
-	readonly serve: () => void;
+    /**
+     * Starts the RPC server.
+     *
+     * @returns
+     */
+    readonly serve: () => void;
 }
 
 /**
@@ -140,81 +140,81 @@ export interface StreamServer extends Server {
  * ```
  */
 export function makeStreamServer(
-	options: StreamServerOptions,
+    options: StreamServerOptions,
 ): StreamServer {
-	const { readable, writable } = options;
+    const { readable, writable } = options;
 
-	const { processPayload } = makeBrokerServer(options);
+    const { processPayload } = makeBrokerServer(options);
 
-	function startReading(): void {
-		if (readable.locked) {
-			throw new Deno.errors.BadResource(
-				'bad dispatch to \'startReading\' (stream \'StreamServerOptions.readable\' is locked)',
-			);
-		}
+    function startReading(): void {
+        if (readable.locked) {
+            throw new Deno.errors.BadResource(
+                'bad dispatch to \'startReading\' (stream \'StreamServerOptions.readable\' is locked)',
+            );
+        }
 
-		if (writable.locked) {
-			throw new Deno.errors.BadResource(
-				'bad dispatch to \'startReading\' (stream \'StreamServerOptions.writable\' is locked)',
-			);
-		}
+        if (writable.locked) {
+            throw new Deno.errors.BadResource(
+                'bad dispatch to \'startReading\' (stream \'StreamServerOptions.writable\' is locked)',
+            );
+        }
 
-		const generator = makeEncodedJSONGenerator(readable);
-		const writer = makeEncodedJSONWriter(writable);
+        const generator = makeEncodedJSONGenerator(readable);
+        const writer = makeEncodedJSONWriter(writable);
 
-		async function pump() {
-			const { value: payload } = await generator.next();
+        async function pump() {
+            const { value: payload } = await generator.next();
 
-			// Sometimes we will get junk data when starting to read from IPC so
-			// we need to skip them.
-			if (payload === undefined) return await tryCleanup();
+            // Sometimes we will get junk data when starting to read from IPC so
+            // we need to skip them.
+            if (payload === undefined) return await tryCleanup();
 
-			const response = await processPayload(payload);
-			if (response === undefined) return await tryCleanup();
+            const response = await processPayload(payload);
+            if (response === undefined) return await tryCleanup();
 
-			await writer.write(response);
-			await tryCleanup();
-		}
+            await writer.write(response);
+            await tryCleanup();
+        }
 
-		async function tryCleanup() {
-			if (server.closed) {
-				writer.releaseLock();
-				await generator.return();
-			} else setTimeout(pump);
-		}
+        async function tryCleanup() {
+            if (server.closed) {
+                writer.releaseLock();
+                await generator.return();
+            } else setTimeout(pump);
+        }
 
-		// HACK: Using an inner loop function so we can pump the event loop without
-		// hammering the CPU.
-		pump();
-	}
+        // HACK: Using an inner loop function so we can pump the event loop without
+        // hammering the CPU.
+        pump();
+    }
 
-	const server: StreamServer = {
-		closed: true,
+    const server: StreamServer = {
+        closed: true,
 
-		close: () => {
-			if (server.closed) {
-				throw new Deno.errors.BadResource(
-					'bad dispatch to \'StreamServer.close\' (server is already closed)',
-				);
-			}
+        close: () => {
+            if (server.closed) {
+                throw new Deno.errors.BadResource(
+                    'bad dispatch to \'StreamServer.close\' (server is already closed)',
+                );
+            }
 
-			// @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
-			server.closed = true;
-		},
+            // @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
+            server.closed = true;
+        },
 
-		serve: () => {
-			if (!server.closed) {
-				throw new Deno.errors.BadResource(
-					'bad dispatch to \'StreamServer.close\' (server is already serving)',
-				);
-			}
+        serve: () => {
+            if (!server.closed) {
+                throw new Deno.errors.BadResource(
+                    'bad dispatch to \'StreamServer.close\' (server is already serving)',
+                );
+            }
 
-			startReading();
+            startReading();
 
-			// @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
-			server.closed = false;
-		},
-	};
+            // @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
+            server.closed = false;
+        },
+    };
 
-	return server;
+    return server;
 }

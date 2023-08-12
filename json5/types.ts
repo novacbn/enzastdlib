@@ -11,12 +11,12 @@ import type { ValueOf } from '../collections/mod.ts';
  * ```
  */
 export type JSON5Types =
-	| boolean
-	| null
-	| number
-	| string
-	| JSON5Array
-	| JSON5Object;
+    | boolean
+    | null
+    | number
+    | string
+    | JSON5Array
+    | JSON5Object;
 
 /**
  * Represents an array made up of JSON5 serializable members.
@@ -56,17 +56,17 @@ export type JSON5Object = { [index: string]: JSON5Types | undefined };
  * ```
  */
 export const JSON5_TYPE_NAMES = {
-	array: 'array',
+    array: 'array',
 
-	boolean: 'boolean',
+    boolean: 'boolean',
 
-	null: 'null',
+    null: 'null',
 
-	number: 'number',
+    number: 'number',
 
-	string: 'string',
+    string: 'string',
 
-	object: 'object',
+    object: 'object',
 } as const;
 
 /**

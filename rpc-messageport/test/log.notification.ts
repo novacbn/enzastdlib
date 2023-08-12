@@ -10,15 +10,15 @@ import { SCHEMA_LOG_PARAMETERS } from './log.schema.ts';
 
 parametersschema(log, SCHEMA_LOG_PARAMETERS);
 export function log(
-	_payload: Notification,
-	parameters: LogParametersType,
+    _payload: Notification,
+    parameters: LogParametersType,
 ): void {
-	assertTypeOf(parameters, 'object');
+    assertTypeOf(parameters, 'object');
 
-	const { message } = parameters;
+    const { message } = parameters;
 
-	assertTypeOf(message, 'string');
-	assertEquals(message, 'Hello World!');
+    assertTypeOf(message, 'string');
+    assertEquals(message, 'Hello World!');
 
-	console.log('log', { message });
+    console.log('log', { message });
 }

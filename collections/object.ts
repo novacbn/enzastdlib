@@ -30,7 +30,7 @@ export type EmptyObject = Record<PropertyKey, never>;
  * type FilteredValues = PickValues<typeof MY_CONSTANT_OBJECT, number>; // `{ readonly myNumber: 42; readonly otherNumber: 84; }`
  */
 export type PickValues<Obj, Value> = {
-	[Key in keyof Obj as Obj[Key] extends Value ? Key : never]: Obj[Key];
+    [Key in keyof Obj as Obj[Key] extends Value ? Key : never]: Obj[Key];
 };
 
 /**
@@ -53,7 +53,7 @@ export type PickValues<Obj, Value> = {
  * type FilteredValues = OmitValues<typeof MY_CONSTANT_OBJECT, number>; // `{ readonly myBoolean: false; readonly myString: "Hello World"; }`
  */
 export type OmitValues<Obj, Value> = {
-	[Key in keyof Obj as Obj[Key] extends Value ? never : Key]: Obj[Key];
+    [Key in keyof Obj as Obj[Key] extends Value ? never : Key]: Obj[Key];
 };
 
 /**

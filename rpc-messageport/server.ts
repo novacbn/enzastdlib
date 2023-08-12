@@ -8,26 +8,26 @@ import type { MessagePortLike } from './messageport.ts';
  * Represents options passable to `makeMessagePortServer`.
  */
 export interface MessagePortServerOptions extends ServerOptions {
-	readonly port: MessagePortLike;
+    readonly port: MessagePortLike;
 }
 
 /**
  * Represents a `MessagePort` server made by `makeMessagePortServer`.
  */
 export interface MessagePortServer extends Server {
-	/**
-	 * Closes the RPC server.
-	 *
-	 * @returns
-	 */
-	readonly close: () => void;
+    /**
+     * Closes the RPC server.
+     *
+     * @returns
+     */
+    readonly close: () => void;
 
-	/**
-	 * Starts the RPC server.
-	 *
-	 * @returns
-	 */
-	readonly serve: () => void;
+    /**
+     * Starts the RPC server.
+     *
+     * @returns
+     */
+    readonly serve: () => void;
 }
 
 /**
@@ -118,48 +118,48 @@ export interface MessagePortServer extends Server {
  * ```
  */
 export function makeMessagePortServer(
-	options: MessagePortServerOptions,
+    options: MessagePortServerOptions,
 ): MessagePortServer {
-	const { port } = options;
+    const { port } = options;
 
-	const { processPayload } = makeBrokerServer(options);
+    const { processPayload } = makeBrokerServer(options);
 
-	async function onMessage(event: MessageEvent): Promise<void> {
-		const { data: payload } = event;
+    async function onMessage(event: MessageEvent): Promise<void> {
+        const { data: payload } = event;
 
-		const response = await processPayload(payload);
-		port.postMessage(response);
-	}
+        const response = await processPayload(payload);
+        port.postMessage(response);
+    }
 
-	const server: MessagePortServer = {
-		closed: true,
+    const server: MessagePortServer = {
+        closed: true,
 
-		close: () => {
-			if (server.closed) {
-				throw new Deno.errors.BadResource(
-					'bad dispatch to \'MessagePortServer.close\' (server is already closed)',
-				);
-			}
+        close: () => {
+            if (server.closed) {
+                throw new Deno.errors.BadResource(
+                    'bad dispatch to \'MessagePortServer.close\' (server is already closed)',
+                );
+            }
 
-			port.removeEventListener('message', onMessage);
+            port.removeEventListener('message', onMessage);
 
-			// @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
-			server.closed = true;
-		},
+            // @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
+            server.closed = true;
+        },
 
-		serve: () => {
-			if (!server.closed) {
-				throw new Deno.errors.BadResource(
-					'bad dispatch to \'MessagePortServer.close\' (server is already serving)',
-				);
-			}
+        serve: () => {
+            if (!server.closed) {
+                throw new Deno.errors.BadResource(
+                    'bad dispatch to \'MessagePortServer.close\' (server is already serving)',
+                );
+            }
 
-			port.addEventListener('message', onMessage);
+            port.addEventListener('message', onMessage);
 
-			// @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
-			server.closed = false;
-		},
-	};
+            // @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
+            server.closed = false;
+        },
+    };
 
-	return server;
+    return server;
 }
