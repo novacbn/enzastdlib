@@ -28,7 +28,7 @@ import {
     makeHTTPClient,
     makeHTTPServer,
     PROTOCOL_METHOD,
-    PROTOCOL_PATHNAME_PROCEDURES,
+    PROTOCOL_PATHNAMES,
     PROTOCOL_RESPONSES,
 } from '../mod.ts';
 
@@ -96,8 +96,8 @@ Deno.test(function makeHTTPClientNotificationSuccess() {
 
     const client = makeHTTPClient<EmptyObject, { log: typeof log }>({
         http: {
-            endpoint:
-                `http://${TEST_HOSTNAME}:${TEST_PORT}${PROTOCOL_PATHNAME_PROCEDURES}`,
+            hostname: TEST_HOSTNAME,
+            port: TEST_PORT,
         },
     });
 
@@ -165,8 +165,8 @@ Deno.test(async function makeHTTPClientProcedureSuccess() {
 
     const client = makeHTTPClient<{ add: typeof add }>({
         http: {
-            endpoint:
-                `http://${TEST_HOSTNAME}:${TEST_PORT}${PROTOCOL_PATHNAME_PROCEDURES}`,
+            hostname: TEST_HOSTNAME,
+            port: TEST_PORT,
         },
     });
 
@@ -234,8 +234,8 @@ Deno.test(function makeHTTPClientNotificationHTTPOptionsSuccess() {
 
     const client = makeHTTPClient<EmptyObject, { log: typeof log }>({
         http: {
-            endpoint:
-                `http://${TEST_HOSTNAME}:${TEST_PORT}${PROTOCOL_PATHNAME_PROCEDURES}`,
+            hostname: TEST_HOSTNAME,
+            port: TEST_PORT,
         },
     });
 
@@ -288,8 +288,8 @@ Deno.test(async function makeHTTPClientProcedureHTTPOptionsSuccess() {
 
     const client = makeHTTPClient<{ add: typeof add }>({
         http: {
-            endpoint:
-                `http://${TEST_HOSTNAME}:${TEST_PORT}${PROTOCOL_PATHNAME_PROCEDURES}`,
+            hostname: TEST_HOSTNAME,
+            port: TEST_PORT,
         },
     });
 
@@ -337,7 +337,7 @@ Deno.test(async function makeHTTPServerNotificationSuccess() {
     assertEquals(server.closed, false);
 
     const response = await fetch(
-        `http://${hostname}:${port}${PROTOCOL_PATHNAME_PROCEDURES}`,
+        `http://${hostname}:${port}${PROTOCOL_PATHNAMES.notifications}`,
         {
             body: JSON.stringify(
                 {
@@ -391,7 +391,7 @@ Deno.test(async function makeHTTPServerProcedureSuccess() {
     assertEquals(server.closed, false);
 
     const response = await fetch(
-        `http://${hostname}:${port}${PROTOCOL_PATHNAME_PROCEDURES}`,
+        `http://${hostname}:${port}${PROTOCOL_PATHNAMES.procedures}`,
         {
             body: JSON.stringify(
                 {
@@ -462,7 +462,7 @@ Deno.test(async function makeHTTPServerMethodFailure() {
     assertEquals(server.closed, false);
 
     const response = await fetch(
-        `http://${hostname}:${port}${PROTOCOL_PATHNAME_PROCEDURES}`,
+        `http://${hostname}:${port}${PROTOCOL_PATHNAMES.procedures}`,
         {
             body: JSON.stringify(
                 {
@@ -635,8 +635,8 @@ Deno.test(async function makeHTTPIntegrationSuccess() {
 
     const client = makeHTTPClient<{ add: typeof add }, { log: typeof log }>({
         http: {
-            endpoint:
-                `http://${hostname}:${port}${PROTOCOL_PATHNAME_PROCEDURES}`,
+            hostname: hostname,
+            port: port,
         },
     });
 
