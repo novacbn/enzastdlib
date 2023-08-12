@@ -11,11 +11,20 @@ import {
 
 import {
     PROTOCOL_METHOD,
-    PROTOCOL_PATHNAME_PROCEDURES,
+    PROTOCOL_PATHNAMES,
     PROTOCOL_RESPONSES,
 } from './protocol.ts';
 
 import { serveHTTP } from './serve.ts';
+
+/**
+ * Represents all the valid HTTP pathnames supported by the enzastdlib RPC protocol.
+ *
+ * @private
+ */
+const VALID_PROTOCOL_PATHNAMES = new Set<string>(
+    Object.values(PROTOCOL_PATHNAMES),
+);
 
 /**
  * Represents options passable to `makeHTTPServer`.
@@ -169,25 +178,6 @@ export function makeHTTPServer(
             if (response) return response;
         }
 
-        const url = new URL(request.url);
-        if (url.pathname !== PROTOCOL_PATHNAME_PROCEDURES) {
-            return new Response(
-                JSON.stringify(
-                    {
-                        enzastdlib: PROTOCOL_VERSION,
-                        type: PAYLOAD_TYPES.error,
-
-                        name: 'NotFound',
-                        message:
-                            `bad request to server (invalid pathname '${url.pathname}')`,
-                    } satisfies Error,
-                ),
-                {
-                    status: PROTOCOL_RESPONSES.invalid_pathname,
-                },
-            );
-        }
-
         if (request.method !== PROTOCOL_METHOD) {
             return new Response(
                 JSON.stringify(
@@ -195,13 +185,33 @@ export function makeHTTPServer(
                         enzastdlib: PROTOCOL_VERSION,
                         type: PAYLOAD_TYPES.error,
 
-                        name: 'BadResource',
+                        name: Deno.errors.BadResource.name,
                         message:
                             `bad request to server (invalid method '${request.method}', method must be '${PROTOCOL_METHOD}')`,
                     } satisfies Error,
                 ),
                 {
                     status: PROTOCOL_RESPONSES.invalid_method,
+                },
+            );
+        }
+
+        const url = new URL(request.url);
+
+        if (!VALID_PROTOCOL_PATHNAMES.has(url.pathname)) {
+            return new Response(
+                JSON.stringify(
+                    {
+                        enzastdlib: PROTOCOL_VERSION,
+                        type: PAYLOAD_TYPES.error,
+
+                        name: Deno.errors.NotFound.name,
+                        message:
+                            `bad request to server (invalid pathname '${url.pathname}')`,
+                    } satisfies Error,
+                ),
+                {
+                    status: PROTOCOL_RESPONSES.invalid_pathname,
                 },
             );
         }

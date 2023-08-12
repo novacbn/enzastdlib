@@ -9,7 +9,7 @@ import type {
 } from '../rpc-protocol/mod.ts';
 import { makeBrokerClient } from '../rpc-protocol/mod.ts';
 
-import { PROTOCOL_METHOD } from './protocol.ts';
+import { PROTOCOL_METHOD, PROTOCOL_PATHNAMES } from './protocol.ts';
 
 /**
  * Represents HTTP-related call options that can be passed when invoking.
@@ -30,9 +30,34 @@ export interface HTTPClientOptions extends ClientOptions<HTTPCallOptions> {
      */
     readonly http: {
         /**
-         * Represents the HTTP endpoint to request for RPC calls.
+         * Represents the hostname of the remote RPC server.
          */
-        readonly endpoint: string;
+        readonly hostname: string;
+
+        /**
+         * Represents if the remote RPC server is using HTTPS.
+         */
+        readonly https?: boolean;
+
+        /**
+         * Represents the port of the remote RPC server.
+         */
+        readonly port?: number;
+
+        /**
+         * Represents the pathname endpoints used to handle each RPC call type.
+         */
+        readonly endpoints?: {
+            /**
+             * Represents the endpoint used to handle notification calls.
+             */
+            readonly notifications?: string;
+
+            /**
+             * Represents the endpoint used to handle procedure calls.
+             */
+            readonly procedures?: string;
+        };
     };
 }
 
@@ -119,10 +144,7 @@ export type HTTPClient<
  * **mod.ts**
  * ```typescript
  * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
- * import {
- *     PROTOCOL_PATHNAME_PROCEDURES,
- *     makeHTTPClient,
- * } from 'https://deno.land/x/enzastdlib/rpc-http/mod.ts';
+ * import { makeHTTPClient } from 'https://deno.land/x/enzastdlib/rpc-http/mod.ts';
  *
  * import type { add } from './add.procedure.ts';
  *
@@ -130,7 +152,8 @@ export type HTTPClient<
  *
  * const client = makeHTTPClient<MyRPCProcedures>({
  *     http: {
- *         endpoint: `http://example.domain${PROTOCOL_PATHNAME_PROCEDURES}`,
+ *         hostname: '127.0.0.1',
+ *         port: 8080,
  *     },
  * });
  *
@@ -146,18 +169,32 @@ export function makeHTTPClient<
     options: HTTPClientOptions,
 ): HTTPClient<Notifications, Procedures> {
     const { http } = options;
-    const { endpoint } = http;
 
-    // NOTE: We do not technically need to use `new URL` here
-    // but is provides us with an upfront validation if the
-    // provided endpoint is valid.
-    const url = new URL(endpoint);
+    const {
+        endpoints = {},
+        https = false,
+        hostname,
+        port = https ? 443 : 8080,
+    } = http;
+
+    const {
+        notifications: pathname_notifications =
+            PROTOCOL_PATHNAMES.notifications,
+        procedures: pathname_procedures = PROTOCOL_PATHNAMES.procedures,
+    } = endpoints;
+
+    const url_base = new URL(
+        `${https ? 'https' : 'http'}://${hostname}:${port}`,
+    );
+
+    const url_notifications = new URL(pathname_notifications, url_base);
+    const url_procedures = new URL(pathname_procedures, url_base);
 
     const { notifications, procedures } = makeBrokerClient<Procedures>({
         ...options,
 
         processNotification: async (notification, options: HTTPCallOptions) => {
-            const response = await fetch(url, {
+            const response = await fetch(url_notifications, {
                 ...options.http,
 
                 method: PROTOCOL_METHOD,
@@ -173,7 +210,7 @@ export function makeHTTPClient<
         processProcedure: async (procedure, options: HTTPCallOptions) => {
             const { signal } = options;
 
-            const promise = fetch(url, {
+            const promise = fetch(url_procedures, {
                 ...options.http,
 
                 method: PROTOCOL_METHOD,

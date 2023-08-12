@@ -10,13 +10,23 @@ export const PROTOCOL_METHOD = 'POST';
 /**
  * Represents the HTTP namespace pathname exclusively used by enzastdlib's RPC protocol.
  */
-export const PROTOCOL_PATHNAME = `/.enzastdlib/rpc`;
+export const PROTOCOL_NAMESPACE =
+    `/.enzastdlib/rpc/${PROTOCOL_VERSION}` as const;
 
 /**
- * Represents the HTTP pathname for procedure calls used by enzastdlib's RPC protocol.
+ * Represents a mapping of standard enzastdlib RPC call handling to HTTP pathnames.
  */
-export const PROTOCOL_PATHNAME_PROCEDURES =
-    `${PROTOCOL_PATHNAME}/procedures/${PROTOCOL_VERSION}`;
+export const PROTOCOL_PATHNAMES = {
+    /**
+     * Represents the pathname used by notification calls.
+     */
+    notifications: `${PROTOCOL_NAMESPACE}/notifications`,
+
+    /**
+     * Represents the pathname used by procedure calls.
+     */
+    procedures: `${PROTOCOL_NAMESPACE}/procedures`,
+} as const;
 
 /**
  * Represents a mapping of standard enzastdlib RPC protocol behavior to HTTP status codes.
@@ -42,9 +52,14 @@ export const PROTOCOL_RESPONSES = {
      * Represents when a client makes an RPC call with an invalid pathname.
      */
     invalid_pathname: 404,
-};
+} as const;
 
 /**
- * Represents a union of all possible HTTP status codes enzastdlib RPC protocol can emit.
+ * Represents a union of all possible HTTP status codes the enzastdlib RPC protocol can emit.
  */
 export type ProtocolResponses = ValueOf<typeof PROTOCOL_RESPONSES>;
+
+/**
+ * Represents a union of all possible HTTP pathnames used by the enzastdlib's RPC protocol.
+ */
+export type ProtocolPathnames = ValueOf<typeof PROTOCOL_PATHNAMES>;
