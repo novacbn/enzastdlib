@@ -53,7 +53,7 @@ export const getUserCache = () => join(getUserHome(), 'Library', 'Caches');
  * ```
  */
 export const getUserConfig = () =>
-	join(getUserHome(), 'Library', 'Application Support');
+    join(getUserHome(), 'Library', 'Application Support');
 
 /**
  * Returns the data directory of the current user.
@@ -72,7 +72,7 @@ export const getUserConfig = () =>
  * ```
  */
 export const getUserData = () =>
-	join(getUserHome(), 'Library', 'Application Support');
+    join(getUserHome(), 'Library', 'Application Support');
 
 /**
  * Returns the state directory of the current user.
@@ -91,4 +91,4 @@ export const getUserData = () =>
  * ```
  */
 export const getUserState = () =>
-	join(getUserHome(), 'Library', 'Application Support');
+    join(getUserHome(), 'Library', 'Application Support');

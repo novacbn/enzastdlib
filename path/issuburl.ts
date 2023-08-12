@@ -22,11 +22,11 @@ import { relativePathname } from './relativepathname.ts';
  * ```
  */
 export function isSubURL(parent: URL, child: URL): boolean {
-	if (parent.origin !== child.origin) return false;
-	else if (parent.protocol !== child.protocol) return false;
+    if (parent.origin !== child.origin) return false;
+    else if (parent.protocol !== child.protocol) return false;
 
-	const relative_pathname = relativePathname(parent, child);
+    const relative_pathname = relativePathname(parent, child);
 
-	return relative_pathname !== '..' &&
-		!relative_pathname.startsWith('../');
+    return relative_pathname !== '..' &&
+        !relative_pathname.startsWith('../');
 }

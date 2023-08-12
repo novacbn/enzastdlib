@@ -36,8 +36,8 @@ export const getUserHome = () => Deno.env.get('HOME')!;
  * ```
  */
 export const getUserCache = () =>
-	Deno.env.get('XDG_CACHE_HOME') ??
-		join(getUserHome(), '.cache');
+    Deno.env.get('XDG_CACHE_HOME') ??
+        join(getUserHome(), '.cache');
 
 /**
  * Returns the config directory of the current user.
@@ -57,8 +57,8 @@ export const getUserCache = () =>
  * ```
  */
 export const getUserConfig = () =>
-	Deno.env.get('XDG_CONFIG_HOME') ??
-		join(getUserHome(), '.config');
+    Deno.env.get('XDG_CONFIG_HOME') ??
+        join(getUserHome(), '.config');
 
 /**
  * Returns the data directory of the current user.
@@ -78,8 +78,8 @@ export const getUserConfig = () =>
  * ```
  */
 export const getUserData = () =>
-	Deno.env.get('XDG_DATA_HOME') ??
-		join(getUserHome(), '.local', 'share');
+    Deno.env.get('XDG_DATA_HOME') ??
+        join(getUserHome(), '.local', 'share');
 
 /**
  * Returns the state directory of the current user.
@@ -99,5 +99,5 @@ export const getUserData = () =>
  * ```
  */
 export const getUserState = () =>
-	Deno.env.get('XDG_STATE_HOME') ??
-		join(getUserHome(), '.local', 'state');
+    Deno.env.get('XDG_STATE_HOME') ??
+        join(getUserHome(), '.local', 'state');

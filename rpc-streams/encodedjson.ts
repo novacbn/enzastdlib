@@ -22,20 +22,20 @@ export type EncodedJSONGenerator = AsyncGenerator<JsonValue, void, unknown>;
  * @private
  */
 export interface EncodedJSONWriter {
-	/**
-	 * Releases the writing lock on a `WritableStream`.
-	 *
-	 * @returns
-	 */
-	readonly releaseLock: () => void;
+    /**
+     * Releases the writing lock on a `WritableStream`.
+     *
+     * @returns
+     */
+    readonly releaseLock: () => void;
 
-	/**
-	 * Writes JSON-compatible data to a `WritableStream`.
-	 *
-	 * @param data
-	 * @returns
-	 */
-	readonly write: (data: unknown) => Promise<void>;
+    /**
+     * Writes JSON-compatible data to a `WritableStream`.
+     *
+     * @param data
+     * @returns
+     */
+    readonly write: (data: unknown) => Promise<void>;
 }
 
 /**
@@ -46,41 +46,41 @@ export interface EncodedJSONWriter {
  * @private
  */
 export async function* makeEncodedJSONGenerator(
-	readable: ReadableStream<Uint8Array>,
+    readable: ReadableStream<Uint8Array>,
 ): EncodedJSONGenerator {
-	const decoder = new TextDecoder();
-	const reader = readable.getReader();
+    const decoder = new TextDecoder();
+    const reader = readable.getReader();
 
-	let buffer = '';
+    let buffer = '';
 
-	try {
-		while (true) {
-			const { done, value: chunk } = await reader.read();
-			let text = decoder.decode(chunk);
+    try {
+        while (true) {
+            const { done, value: chunk } = await reader.read();
+            let text = decoder.decode(chunk);
 
-			while (text.length > 0) {
-				const newline_index = text.indexOf('\n');
-				if (newline_index === -1) {
-					buffer += text;
-					text = '';
+            while (text.length > 0) {
+                const newline_index = text.indexOf('\n');
+                if (newline_index === -1) {
+                    buffer += text;
+                    text = '';
 
-					break;
-				}
+                    break;
+                }
 
-				yield Promise.resolve(JSON.parse(
-					buffer + text.slice(0, newline_index),
-				));
+                yield Promise.resolve(JSON.parse(
+                    buffer + text.slice(0, newline_index),
+                ));
 
-				text = text.slice(newline_index + 1);
-				buffer = '';
-			}
+                text = text.slice(newline_index + 1);
+                buffer = '';
+            }
 
-			if (done) break;
-		}
-	} finally {
-		reader.releaseLock();
-		if (buffer.length > 0) yield Promise.resolve(JSON.parse(buffer));
-	}
+            if (done) break;
+        }
+    } finally {
+        reader.releaseLock();
+        if (buffer.length > 0) yield Promise.resolve(JSON.parse(buffer));
+    }
 }
 
 /**
@@ -93,24 +93,24 @@ export async function* makeEncodedJSONGenerator(
  * @private
  */
 export function makeEncodedJSONWriter(
-	writable: WritableStream<Uint8Array>,
+    writable: WritableStream<Uint8Array>,
 ): EncodedJSONWriter {
-	const encoder = new TextEncoder();
-	const writer = writable.getWriter();
+    const encoder = new TextEncoder();
+    const writer = writable.getWriter();
 
-	return {
-		releaseLock: () => {
-			writer.releaseLock();
-		},
+    return {
+        releaseLock: () => {
+            writer.releaseLock();
+        },
 
-		write: async (data) => {
-			await writer.ready;
+        write: async (data) => {
+            await writer.ready;
 
-			return writer.write(
-				encoder.encode(
-					JSON.stringify(data) + '\n',
-				),
-			);
-		},
-	};
+            return writer.write(
+                encoder.encode(
+                    JSON.stringify(data) + '\n',
+                ),
+            );
+        },
+    };
 }

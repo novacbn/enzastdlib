@@ -5,32 +5,32 @@ import type { FunctionBox } from './function.ts';
  * by `makeDecorator`.
  */
 export interface Decorator<
-	Func extends FunctionBox,
-	Value,
+    Func extends FunctionBox,
+    Value,
 > {
-	/**
-	 * Returns the metadata associated with the specified `func`, if any.
-	 *
-	 * @param func
-	 * @returns
-	 */
-	get(func: Func): Value | undefined;
+    /**
+     * Returns the metadata associated with the specified `func`, if any.
+     *
+     * @param func
+     * @returns
+     */
+    get(func: Func): Value | undefined;
 
-	/**
-	 * Returns if the specified `func` has any metadata associated with it.
-	 *
-	 * @param func
-	 * @returns
-	 */
-	has(func: Func): boolean;
+    /**
+     * Returns if the specified `func` has any metadata associated with it.
+     *
+     * @param func
+     * @returns
+     */
+    has(func: Func): boolean;
 
-	/**
-	 * Sets the metadata associated with the specified `func` to the supplied `value`.
-	 *
-	 * @param func
-	 * @param value
-	 */
-	set(func: Func, value: Value): void;
+    /**
+     * Sets the metadata associated with the specified `func` to the supplied `value`.
+     *
+     * @param func
+     * @param value
+     */
+    set(func: Func, value: Value): void;
 }
 
 /**
@@ -38,8 +38,8 @@ export interface Decorator<
  * on a function.
  */
 export type DecoratorCallback<Func extends FunctionBox, Value> = (
-	func: Func,
-	init: Value,
+    func: Func,
+    init: Value,
 ) => void;
 
 /**
@@ -80,39 +80,39 @@ export type DecoratorCallback<Func extends FunctionBox, Value> = (
  * ```
  */
 export function makeDecorator<
-	InputValue,
-	Func extends FunctionBox = FunctionBox,
-	CacheValue = InputValue,
+    InputValue,
+    Func extends FunctionBox = FunctionBox,
+    CacheValue = InputValue,
 >(
-	func: DecoratorCallback<Func, InputValue>,
+    func: DecoratorCallback<Func, InputValue>,
 ): DecoratorCallback<Func, InputValue> & Decorator<Func, CacheValue> {
-	// NOTE: Since we are using a `Symbol` for metadata access then
-	// we have less to worry about unintended access.
-	//
-	// Also by using the callback's source code (`.toString`) we have
-	// an easily addressable lookup of the metadata.
-	//
-	// It was previously considered to just use the function's name,
-	// but that could lead to unintended namespacing collision.
-	const symbol = Symbol.for(
-		`enzastdlib/decorators:makeDecorator/${func.toString()}`,
-	);
+    // NOTE: Since we are using a `Symbol` for metadata access then
+    // we have less to worry about unintended access.
+    //
+    // Also by using the callback's source code (`.toString`) we have
+    // an easily addressable lookup of the metadata.
+    //
+    // It was previously considered to just use the function's name,
+    // but that could lead to unintended namespacing collision.
+    const symbol = Symbol.for(
+        `enzastdlib/decorators:makeDecorator/${func.toString()}`,
+    );
 
-	const decorator = {
-		get: (func) =>
-			// @ts-ignore - HACK: We are fetching untyped metadata anyway.
-			func[symbol],
+    const decorator = {
+        get: (func) =>
+            // @ts-ignore - HACK: We are fetching untyped metadata anyway.
+            func[symbol],
 
-		has: (func) =>
-			// @ts-ignore - HACK: We are accessing untyped metadata anyway.
-			!!func[symbol],
+        has: (func) =>
+            // @ts-ignore - HACK: We are accessing untyped metadata anyway.
+            !!func[symbol],
 
-		set: (func, value) =>
-			// @ts-ignore - HACK: We are assigning untyped metadata anyway.
-			func[symbol] = value,
-	} satisfies Decorator<Func, InputValue>;
+        set: (func, value) =>
+            // @ts-ignore - HACK: We are assigning untyped metadata anyway.
+            func[symbol] = value,
+    } satisfies Decorator<Func, InputValue>;
 
-	Object.assign(func, decorator);
-	// @ts-ignore - HACK: We are updating an existing function so of course this would not typecheck.
-	return func;
+    Object.assign(func, decorator);
+    // @ts-ignore - HACK: We are updating an existing function so of course this would not typecheck.
+    return func;
 }

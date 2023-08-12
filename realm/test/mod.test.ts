@@ -1,6 +1,6 @@
 import {
-	assertEquals,
-	assertInstanceOf,
+    assertEquals,
+    assertInstanceOf,
 } from '../../vendor/@deno-std-testing.ts';
 
 import { assertTypeOf } from '../../testing/mod.ts';
@@ -16,131 +16,131 @@ import { bundleEntryPoint, evaluateModule, makeRealm } from '../mod.ts';
 type AddExports = { add: typeof add };
 
 Deno.test(async function bundleEntryPointJavaScriptSuccess() {
-	const promise = bundleEntryPoint('./realm/test/testdata/add.js');
-	assertInstanceOf(promise, Promise);
+    const promise = bundleEntryPoint('./realm/test/testdata/add.js');
+    assertInstanceOf(promise, Promise);
 
-	const code = await promise;
-	assertTypeOf(code, 'string');
+    const code = await promise;
+    assertTypeOf(code, 'string');
 
-	assertEquals(
-		code,
-		`function add(a, b) {
+    assertEquals(
+        code,
+        `function add(a, b) {
     return a + b;
 }
 return {
     add: add
 };`,
-	);
+    );
 });
 
 Deno.test(async function bundleEntryPointTypeScriptSuccess() {
-	const promise = bundleEntryPoint('./realm/test/testdata/add.ts');
-	assertInstanceOf(promise, Promise);
+    const promise = bundleEntryPoint('./realm/test/testdata/add.ts');
+    assertInstanceOf(promise, Promise);
 
-	const code = await promise;
-	assertTypeOf(code, 'string');
+    const code = await promise;
+    assertTypeOf(code, 'string');
 
-	assertEquals(
-		code,
-		`function add(a, b) {
+    assertEquals(
+        code,
+        `function add(a, b) {
     return a + b;
 }
 return {
     add: add
 };`,
-	);
+    );
 });
 
 Deno.test(async function bundleEntryPointAbsoluteImportSuccess() {
-	const promise = bundleEntryPoint(
-		'./absolute_import.js',
-		'./realm/test/testdata',
-	);
-	assertInstanceOf(promise, Promise);
+    const promise = bundleEntryPoint(
+        './absolute_import.js',
+        './realm/test/testdata',
+    );
+    assertInstanceOf(promise, Promise);
 
-	const code = await promise;
-	assertTypeOf(code, 'string');
+    const code = await promise;
+    assertTypeOf(code, 'string');
 
-	assertEquals(
-		code,
-		`function add(a, b) {
+    assertEquals(
+        code,
+        `function add(a, b) {
     return a + b;
 }
 return {
     add: add
 };`,
-	);
+    );
 });
 
 Deno.test(async function bundleEntryPointUpImportSuccess() {
-	const promise = bundleEntryPoint(
-		'./subdirectory/up_import.js',
-		'./realm/test/testdata',
-	);
-	assertInstanceOf(promise, Promise);
+    const promise = bundleEntryPoint(
+        './subdirectory/up_import.js',
+        './realm/test/testdata',
+    );
+    assertInstanceOf(promise, Promise);
 
-	const code = await promise;
-	assertTypeOf(code, 'string');
+    const code = await promise;
+    assertTypeOf(code, 'string');
 
-	assertEquals(
-		code,
-		`function add(a, b) {
+    assertEquals(
+        code,
+        `function add(a, b) {
     return a + b;
 }
 return {
     add: add
 };`,
-	);
+    );
 });
 
 Deno.test(async function bundleEntryPointSubImportSuccess() {
-	const promise = bundleEntryPoint('./realm/test/testdata/sub_import.js');
-	assertInstanceOf(promise, Promise);
+    const promise = bundleEntryPoint('./realm/test/testdata/sub_import.js');
+    assertInstanceOf(promise, Promise);
 
-	const code = await promise;
-	assertTypeOf(code, 'string');
+    const code = await promise;
+    assertTypeOf(code, 'string');
 
-	assertEquals(
-		code,
-		`function add(a, b) {
+    assertEquals(
+        code,
+        `function add(a, b) {
     return a + b;
 }
 return {
     add: add
 };`,
-	);
+    );
 });
 
 Deno.test(async function bundleEntryPointExtensionFailure() {
-	try {
-		await bundleEntryPoint('./realm/test/testdata/invalid_extension.tsx');
-	} catch (err) {
-		// HACK: `assertThrows` does not support asynchronous exceptions,
-		// so we need to manually write a try-catch.
+    try {
+        await bundleEntryPoint('./realm/test/testdata/invalid_extension.tsx');
+    } catch (err) {
+        // HACK: `assertThrows` does not support asynchronous exceptions,
+        // so we need to manually write a try-catch.
 
-		assertInstanceOf(err, Deno.errors.NotSupported);
+        assertInstanceOf(err, Deno.errors.NotSupported);
 
-		assertEquals(
-			err.message,
-			'bad argument #0 to \'bundleEntryPoint\' (specifier \'invalid_extension.tsx\' has an invalid extension)',
-		);
-	}
+        assertEquals(
+            err.message,
+            'bad argument #0 to \'bundleEntryPoint\' (specifier \'invalid_extension.tsx\' has an invalid extension)',
+        );
+    }
 });
 
 Deno.test(async function bundleEntryPointNotFoundFailure() {
-	try {
-		await bundleEntryPoint('./realm/test/testdata/not_found.js');
-	} catch (err) {
-		// HACK: `assertThrows` does not support asynchronous exceptions,
-		// so we need to manually write a try-catch.
+    try {
+        await bundleEntryPoint('./realm/test/testdata/not_found.js');
+    } catch (err) {
+        // HACK: `assertThrows` does not support asynchronous exceptions,
+        // so we need to manually write a try-catch.
 
-		assertInstanceOf(err, Deno.errors.NotFound);
+        assertInstanceOf(err, Deno.errors.NotFound);
 
-		assertEquals(
-			err.message,
-			'bad argument #0 to \'bundleEntryPoint\' (specifier \'not_found.js\' does not exist or not readable)',
-		);
-	}
+        assertEquals(
+            err.message,
+            'bad argument #0 to \'bundleEntryPoint\' (specifier \'not_found.js\' does not exist or not readable)',
+        );
+    }
 });
 
 /*
@@ -167,46 +167,46 @@ Deno.test(async function bundleEntryPointImportCWDEscapeFailure() {
 */
 
 Deno.test(async function evaluateModuleSuccess() {
-	const promise = evaluateModule<{ myVar: string }>(
-		'return { myVar: hello };',
-		{
-			globalThis: {
-				hello: 'world',
-			},
-		},
-	);
+    const promise = evaluateModule<{ myVar: string }>(
+        'return { myVar: hello };',
+        {
+            globalThis: {
+                hello: 'world',
+            },
+        },
+    );
 
-	assertInstanceOf(promise, Promise);
+    assertInstanceOf(promise, Promise);
 
-	const exports = await promise;
+    const exports = await promise;
 
-	assertTypeOf(exports, 'object');
-	assertTypeOf(exports.myVar, 'string');
+    assertTypeOf(exports, 'object');
+    assertTypeOf(exports.myVar, 'string');
 
-	assertEquals(exports.myVar, 'world');
+    assertEquals(exports.myVar, 'world');
 });
 
 Deno.test(async function makeRealmImportModuleSuccess() {
-	const realm = makeRealm({
-		cwd: './realm/test/testdata',
-	});
+    const realm = makeRealm({
+        cwd: './realm/test/testdata',
+    });
 
-	assertTypeOf(realm, 'object');
-	assertTypeOf(realm.importModule, 'function');
+    assertTypeOf(realm, 'object');
+    assertTypeOf(realm.importModule, 'function');
 
-	const promise = realm.importModule<AddExports>(
-		'./add.js',
-	);
+    const promise = realm.importModule<AddExports>(
+        './add.js',
+    );
 
-	assertInstanceOf(promise, Promise);
+    assertInstanceOf(promise, Promise);
 
-	const exports = await promise;
+    const exports = await promise;
 
-	assertTypeOf(exports, 'object');
-	assertTypeOf(exports.add, 'function');
+    assertTypeOf(exports, 'object');
+    assertTypeOf(exports.add, 'function');
 
-	assertEquals(
-		exports.add(1, 2),
-		3,
-	);
+    assertEquals(
+        exports.add(1, 2),
+        3,
+    );
 });

@@ -11,20 +11,20 @@ import { SCHEMA_ADD_PARAMETERS, SCHEMA_ADD_RETURN } from './add.schema.ts';
 parametersschema(add, SCHEMA_ADD_PARAMETERS);
 resultschema(add, SCHEMA_ADD_RETURN);
 export function add(
-	_payload: Procedure,
-	parameters: AddParametersType,
+    _payload: Procedure,
+    parameters: AddParametersType,
 ): AddReturnType {
-	assertTypeOf(parameters, 'object');
+    assertTypeOf(parameters, 'object');
 
-	const { a, b } = parameters;
+    const { a, b } = parameters;
 
-	assertTypeOf(a, 'number');
-	assertEquals(a, 2);
+    assertTypeOf(a, 'number');
+    assertEquals(a, 2);
 
-	assertTypeOf(b, 'number');
-	assertEquals(b, 1);
+    assertTypeOf(b, 'number');
+    assertEquals(b, 1);
 
-	return {
-		sum: a + b,
-	};
+    return {
+        sum: a + b,
+    };
 }

@@ -23,10 +23,10 @@ import { OmitValues, PickValues } from './object.ts';
  * ```
  */
 export type MethodsOf<Cls> = PickValues<
-	Cls,
-	// HACK: We need to use an "any function" to catch all functions.
-	// deno-lint-ignore ban-types
-	Function
+    Cls,
+    // HACK: We need to use an "any function" to catch all functions.
+    // deno-lint-ignore ban-types
+    Function
 >;
 
 /**
@@ -52,8 +52,8 @@ export type MethodsOf<Cls> = PickValues<
  * ```
  */
 export type PropertiesOf<Cls> = OmitValues<
-	Cls,
-	// HACK: We need to use an "any function" to catch all functions.
-	// deno-lint-ignore ban-types
-	Function
+    Cls,
+    // HACK: We need to use an "any function" to catch all functions.
+    // deno-lint-ignore ban-types
+    Function
 >;

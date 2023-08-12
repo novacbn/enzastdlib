@@ -69,28 +69,28 @@ export type JSON5ExpressionRecord = Record<string, string | undefined>;
  * ```
  */
 export function parseJSON5ExpressionRecord<Type>(
-	schema: JSONSchemaObject,
-	record: JSON5ExpressionRecord,
+    schema: JSONSchemaObject,
+    record: JSON5ExpressionRecord,
 ): Type {
-	return Object.fromEntries(
-		Object
-			.entries(schema.properties ?? {})
-			.map(([key, schema]) => {
-				const type = (schema as JSONSchema).type!;
-				const value = record[key];
+    return Object.fromEntries(
+        Object
+            .entries(schema.properties ?? {})
+            .map(([key, schema]) => {
+                const type = (schema as JSONSchema).type!;
+                const value = record[key];
 
-				if (value === undefined) return [key, undefined];
+                if (value === undefined) return [key, undefined];
 
-				const parsed = parseJSON5Expression(
-					// HACK: Function overloads are much stricter than union argument types.
-					// deno-lint-ignore no-explicit-any
-					type as any,
-					value,
-				);
+                const parsed = parseJSON5Expression(
+                    // HACK: Function overloads are much stricter than union argument types.
+                    // deno-lint-ignore no-explicit-any
+                    type as any,
+                    value,
+                );
 
-				return [key, parsed];
-			})
-			// HACK: Cloudflare's JSON Schema validator errors on `undefined` values so we need to filter those out.
-			.filter(([_variable, value]) => value !== undefined),
-	);
+                return [key, parsed];
+            })
+            // HACK: Cloudflare's JSON Schema validator errors on `undefined` values so we need to filter those out.
+            .filter(([_variable, value]) => value !== undefined),
+    );
 }

@@ -20,135 +20,135 @@ const CACHE_VALIDATORS = new Map<string, Validator | undefined>();
  * Associates a `JSONSchema` value as the parameters payload with the function.
  */
 export const parametersschema = makeDecorator<
-	JSONSchemaObject,
-	NotificationCallback | ProcedureCallback
+    JSONSchemaObject,
+    NotificationCallback | ProcedureCallback
 >((func, schema) => {
-	parametersschema.set(func, schema);
+    parametersschema.set(func, schema);
 });
 
 /**
  * Associates a `JSONSchema` value as the result payload with the function.
  */
 export const resultschema = makeDecorator<
-	JSONSchemaObject,
-	NotificationCallback | ProcedureCallback
+    JSONSchemaObject,
+    NotificationCallback | ProcedureCallback
 >((func, schema) => {
-	resultschema.set(func, schema);
+    resultschema.set(func, schema);
 });
 
 export function testParametersSchema(
-	func: NotificationCallback | ProcedureCallback,
-	payload: Notification | Procedure,
+    func: NotificationCallback | ProcedureCallback,
+    payload: Notification | Procedure,
 ) {
-	if (parametersschema.has(func)) {
-		const {
-			// @ts-ignore - HACK: If the ID is available, we simply
-			// use it. Otherwise we can ignore it.
-			id,
-			parameters,
-		} = payload;
+    if (parametersschema.has(func)) {
+        const {
+            // @ts-ignore - HACK: If the ID is available, we simply
+            // use it. Otherwise we can ignore it.
+            id,
+            parameters,
+        } = payload;
 
-		if (!parameters) {
-			return deleteUndefined({
-				enzastdlib: PROTOCOL_VERSION,
-				type: PAYLOAD_TYPES.error,
-				id,
+        if (!parameters) {
+            return deleteUndefined({
+                enzastdlib: PROTOCOL_VERSION,
+                type: PAYLOAD_TYPES.error,
+                id,
 
-				name: ValidationError.name,
-				message:
-					`bad call to ${payload.type} '${func.name}' (a parameters payload was expected)`,
-			}) satisfies Error;
-		}
+                name: ValidationError.name,
+                message:
+                    `bad call to ${payload.type} '${func.name}' (a parameters payload was expected)`,
+            }) satisfies Error;
+        }
 
-		const schema_id = `parameters:${payload.type}:${func.name}`;
-		if (!CACHE_VALIDATORS.has(schema_id)) {
-			const schema = parametersschema.get(func)!;
+        const schema_id = `parameters:${payload.type}:${func.name}`;
+        if (!CACHE_VALIDATORS.has(schema_id)) {
+            const schema = parametersschema.get(func)!;
 
-			CACHE_VALIDATORS.set(
-				schema_id,
-				makeValidator(schema),
-			);
-		}
+            CACHE_VALIDATORS.set(
+                schema_id,
+                makeValidator(schema),
+            );
+        }
 
-		const validator = CACHE_VALIDATORS.get(schema_id)!;
-		const errors = validator.test(parameters);
+        const validator = CACHE_VALIDATORS.get(schema_id)!;
+        const errors = validator.test(parameters);
 
-		if (errors) {
-			return deleteUndefined({
-				enzastdlib: PROTOCOL_VERSION,
-				type: PAYLOAD_TYPES.error,
-				id,
+        if (errors) {
+            return deleteUndefined({
+                enzastdlib: PROTOCOL_VERSION,
+                type: PAYLOAD_TYPES.error,
+                id,
 
-				name: ValidationError.name,
-				message:
-					`bad call to ${payload.type} '${func.name}' (failed to validate parameters payload):\n\n${
-						errors
-							.map((error) =>
-								`${error.property}: ${error.message}`
-							).join('\n')
-					}`,
-			}) satisfies Error;
-		}
-	}
+                name: ValidationError.name,
+                message:
+                    `bad call to ${payload.type} '${func.name}' (failed to validate parameters payload):\n\n${
+                        errors
+                            .map((error) =>
+                                `${error.property}: ${error.message}`
+                            ).join('\n')
+                    }`,
+            }) satisfies Error;
+        }
+    }
 }
 
 export function testResultSchema(
-	func: ProcedureCallback,
-	payload: Procedure,
-	result: unknown,
+    func: ProcedureCallback,
+    payload: Procedure,
+    result: unknown,
 ) {
-	if (resultschema.has(func)) {
-		const { id } = payload;
+    if (resultschema.has(func)) {
+        const { id } = payload;
 
-		if (!result) {
-			console.error(
-				new ValidationError(
-					`bad return from ${payload.type} '${func.name}' (a response payload was expected)`,
-				),
-			);
+        if (!result) {
+            console.error(
+                new ValidationError(
+                    `bad return from ${payload.type} '${func.name}' (a response payload was expected)`,
+                ),
+            );
 
-			return {
-				enzastdlib: PROTOCOL_VERSION,
-				type: PAYLOAD_TYPES.error,
-				id,
+            return {
+                enzastdlib: PROTOCOL_VERSION,
+                type: PAYLOAD_TYPES.error,
+                id,
 
-				name: InternalError.name,
-				message:
-					`bad call to ${payload.type} '${func.name}' (server had an exception while responding)`,
-			} satisfies Error;
-		}
+                name: InternalError.name,
+                message:
+                    `bad call to ${payload.type} '${func.name}' (server had an exception while responding)`,
+            } satisfies Error;
+        }
 
-		const schema_id = `result:${payload.type}:${func.name}`;
-		if (!CACHE_VALIDATORS.has(schema_id)) {
-			const schema = resultschema.get(func)!;
+        const schema_id = `result:${payload.type}:${func.name}`;
+        if (!CACHE_VALIDATORS.has(schema_id)) {
+            const schema = resultschema.get(func)!;
 
-			CACHE_VALIDATORS.set(
-				schema_id,
-				makeValidator(schema),
-			);
-		}
+            CACHE_VALIDATORS.set(
+                schema_id,
+                makeValidator(schema),
+            );
+        }
 
-		const validator = CACHE_VALIDATORS.get(schema_id)!;
-		const errors = validator.test(result);
+        const validator = CACHE_VALIDATORS.get(schema_id)!;
+        const errors = validator.test(result);
 
-		if (errors) {
-			console.error(
-				`bad return from ${payload.type} '${func.name}' (failed to validate response payload):\n\n${
-					errors
-						.map((error) => `${error.property}: ${error.message}`)
-						.join('\n')
-				}`,
-			);
+        if (errors) {
+            console.error(
+                `bad return from ${payload.type} '${func.name}' (failed to validate response payload):\n\n${
+                    errors
+                        .map((error) => `${error.property}: ${error.message}`)
+                        .join('\n')
+                }`,
+            );
 
-			return {
-				enzastdlib: PROTOCOL_VERSION,
-				type: PAYLOAD_TYPES.error,
-				id,
+            return {
+                enzastdlib: PROTOCOL_VERSION,
+                type: PAYLOAD_TYPES.error,
+                id,
 
-				name: InternalError.name,
-				message:
-					`bad call to ${payload.type} '${func.name}' (server had an exception while responding)`,
-			} satisfies Error;
-		}
-	}
+                name: InternalError.name,
+                message:
+                    `bad call to ${payload.type} '${func.name}' (server had an exception while responding)`,
+            } satisfies Error;
+        }
+    }
 }

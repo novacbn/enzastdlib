@@ -25,24 +25,24 @@ type FlagsRecord = Record<string, string | undefined>;
  * @returns
  */
 export function collectFlags(args: string[]): FlagsRecord {
-	let flag_group: string | undefined;
+    let flag_group: string | undefined;
 
-	return args.reduce<FlagsRecord>((flags, arg) => {
-		if (arg.startsWith(PREFIX_FLAG)) {
-			flag_group = arg.slice(2);
-		} else if (flag_group) {
-			const flag = flags[flag_group];
+    return args.reduce<FlagsRecord>((flags, arg) => {
+        if (arg.startsWith(PREFIX_FLAG)) {
+            flag_group = arg.slice(2);
+        } else if (flag_group) {
+            const flag = flags[flag_group];
 
-			flags[flag_group] = flag ? `${flag} ${arg.trim()}` : arg.trim();
-			flag_group = undefined;
-		} else {
-			const rest = flags['_'];
+            flags[flag_group] = flag ? `${flag} ${arg.trim()}` : arg.trim();
+            flag_group = undefined;
+        } else {
+            const rest = flags['_'];
 
-			flags['_'] = rest ? `${rest} ${arg.trim()}` : arg.trim();
-		}
+            flags['_'] = rest ? `${rest} ${arg.trim()}` : arg.trim();
+        }
 
-		return flags;
-	}, {});
+        return flags;
+    }, {});
 }
 
 /**
@@ -56,33 +56,33 @@ export function collectFlags(args: string[]): FlagsRecord {
  * @returns
  */
 export function extractCommand(
-	args: string[],
+    args: string[],
 ): { args: string[]; command?: string } {
-	let command: string | undefined;
+    let command: string | undefined;
 
-	for (const index in args) {
-		const arg = args[index];
-		if (!arg.startsWith(PREFIX_FLAG)) {
-			command = arg;
+    for (const index in args) {
+        const arg = args[index];
+        if (!arg.startsWith(PREFIX_FLAG)) {
+            command = arg;
 
-			// NOTE: We are cloning `args` since `Array.splice` mutates its target
-			// array rather than passing back a modified clone.
-			args = [...args];
+            // NOTE: We are cloning `args` since `Array.splice` mutates its target
+            // array rather than passing back a modified clone.
+            args = [...args];
 
-			args.splice(
-				// @ts-ignore - HACK: `Array.splice` actually does not care
-				// if we pass a string as long as it is a number. So we can safely
-				// tell TypeScript to ignore this.
-				index,
-				1,
-			);
+            args.splice(
+                // @ts-ignore - HACK: `Array.splice` actually does not care
+                // if we pass a string as long as it is a number. So we can safely
+                // tell TypeScript to ignore this.
+                index,
+                1,
+            );
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	return {
-		args,
-		command,
-	};
+    return {
+        args,
+        command,
+    };
 }

@@ -50,8 +50,8 @@ import { CommandCallback } from './command.ts';
  * ```
  */
 export const schema = makeDecorator<
-	JSONSchemaObject,
-	CommandCallback
+    JSONSchemaObject,
+    CommandCallback
 >((func, _schema) => {
-	schema.set(func, _schema);
+    schema.set(func, _schema);
 });

@@ -34,28 +34,28 @@ const EXPRESSION_WORDS = /\s*[^\s]+/g;
  * ```
  */
 export function splitLength(text: string, max_length: number): string[] {
-	const lines = text.split(EXPRESSION_NEWLINE);
+    const lines = text.split(EXPRESSION_NEWLINE);
 
-	return lines.map((line) => {
-		const matches = line.match(EXPRESSION_WORDS);
-		if (!matches) return [line];
+    return lines.map((line) => {
+        const matches = line.match(EXPRESSION_WORDS);
+        if (!matches) return [line];
 
-		const sublines: string[] = [];
-		let subline = '';
-		for (let match of matches) {
-			if (subline === '') match = match.trimStart();
+        const sublines: string[] = [];
+        let subline = '';
+        for (let match of matches) {
+            if (subline === '') match = match.trimStart();
 
-			const display_width = unicodeWidth(stripColor(subline));
-			if (display_width < max_length) {
-				subline += match;
-				continue;
-			}
+            const display_width = unicodeWidth(stripColor(subline));
+            if (display_width < max_length) {
+                subline += match;
+                continue;
+            }
 
-			sublines.push(subline);
-			subline = match.trimStart();
-		}
+            sublines.push(subline);
+            subline = match.trimStart();
+        }
 
-		if (subline.length > 0) sublines.push(subline);
-		return sublines;
-	}).flat();
+        if (subline.length > 0) sublines.push(subline);
+        return sublines;
+    }).flat();
 }

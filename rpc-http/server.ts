@@ -4,15 +4,15 @@ import type { Server, ServerOptions } from '../rpc/mod.ts';
 
 import type { Error } from '../rpc-protocol/mod.ts';
 import {
-	makeBrokerServer,
-	PAYLOAD_TYPES,
-	PROTOCOL_VERSION,
+    makeBrokerServer,
+    PAYLOAD_TYPES,
+    PROTOCOL_VERSION,
 } from '../rpc-protocol/mod.ts';
 
 import {
-	PROTOCOL_METHOD,
-	PROTOCOL_PATHNAME_PROCEDURES,
-	PROTOCOL_RESPONSES,
+    PROTOCOL_METHOD,
+    PROTOCOL_PATHNAME_PROCEDURES,
+    PROTOCOL_RESPONSES,
 } from './protocol.ts';
 
 import { serveHTTP } from './serve.ts';
@@ -21,49 +21,49 @@ import { serveHTTP } from './serve.ts';
  * Represents options passable to `makeHTTPServer`.
  */
 export interface HTTPServerOptions extends ServerOptions {
-	/**
-	 * Represents HTTP-related options that is used by the RPC server.
-	 */
-	readonly http?:
-		& (
-			| Omit<ServeInit, 'onListen' | 'signal'>
-			| Omit<ServeTlsInit, 'onListen' | 'signal'>
-		)
-		& {
-			/**
-			 * Represents an HTTP-level middleware that is invoked before the RPC
-			 * server processes the request. If a `Response` instance is returned
-			 * then the RPC Server will respond with that instead of processing
-			 * the request as an RPC call.
-			 *
-			 * @param request
-			 * @returns
-			 */
-			readonly onRequest?: (
-				request: Request,
-			) => Promise<Response | void> | Response | void;
-		};
+    /**
+     * Represents HTTP-related options that is used by the RPC server.
+     */
+    readonly http?:
+        & (
+            | Omit<ServeInit, 'onListen' | 'signal'>
+            | Omit<ServeTlsInit, 'onListen' | 'signal'>
+        )
+        & {
+            /**
+             * Represents an HTTP-level middleware that is invoked before the RPC
+             * server processes the request. If a `Response` instance is returned
+             * then the RPC Server will respond with that instead of processing
+             * the request as an RPC call.
+             *
+             * @param request
+             * @returns
+             */
+            readonly onRequest?: (
+                request: Request,
+            ) => Promise<Response | void> | Response | void;
+        };
 }
 
 /**
  * Represents a HTTP server made by `makeHTTPServer`.
  */
 export interface HTTPServer extends Server {
-	/**
-	 * Closes the RPC server.
-	 *
-	 * @returns
-	 */
-	readonly close: () => void;
+    /**
+     * Closes the RPC server.
+     *
+     * @returns
+     */
+    readonly close: () => void;
 
-	/**
-	 * Starts the RPC server.
-	 *
-	 * @returns
-	 */
-	readonly serve: () => Promise<
-		Parameters<Exclude<ServeInit['onListen'], undefined>>[0]
-	>;
+    /**
+     * Starts the RPC server.
+     *
+     * @returns
+     */
+    readonly serve: () => Promise<
+        Parameters<Exclude<ServeInit['onListen'], undefined>>[0]
+    >;
 }
 
 /**
@@ -155,113 +155,113 @@ export interface HTTPServer extends Server {
  * ```
  */
 export function makeHTTPServer(
-	options: HTTPServerOptions,
+    options: HTTPServerOptions,
 ): HTTPServer {
-	const { http } = options;
+    const { http } = options;
 
-	const { processPayload } = makeBrokerServer(options);
+    const { processPayload } = makeBrokerServer(options);
 
-	let controller: AbortController | null;
+    let controller: AbortController | null;
 
-	async function onRequest(request: Request): Promise<Response> {
-		if (http && http.onRequest) {
-			const response = await http.onRequest(request);
-			if (response) return response;
-		}
+    async function onRequest(request: Request): Promise<Response> {
+        if (http && http.onRequest) {
+            const response = await http.onRequest(request);
+            if (response) return response;
+        }
 
-		const url = new URL(request.url);
-		if (url.pathname !== PROTOCOL_PATHNAME_PROCEDURES) {
-			return new Response(
-				JSON.stringify(
-					{
-						enzastdlib: PROTOCOL_VERSION,
-						type: PAYLOAD_TYPES.error,
+        const url = new URL(request.url);
+        if (url.pathname !== PROTOCOL_PATHNAME_PROCEDURES) {
+            return new Response(
+                JSON.stringify(
+                    {
+                        enzastdlib: PROTOCOL_VERSION,
+                        type: PAYLOAD_TYPES.error,
 
-						name: 'NotFound',
-						message:
-							`bad request to server (invalid pathname '${url.pathname}')`,
-					} satisfies Error,
-				),
-				{
-					status: PROTOCOL_RESPONSES.invalid_pathname,
-				},
-			);
-		}
+                        name: 'NotFound',
+                        message:
+                            `bad request to server (invalid pathname '${url.pathname}')`,
+                    } satisfies Error,
+                ),
+                {
+                    status: PROTOCOL_RESPONSES.invalid_pathname,
+                },
+            );
+        }
 
-		if (request.method !== PROTOCOL_METHOD) {
-			return new Response(
-				JSON.stringify(
-					{
-						enzastdlib: PROTOCOL_VERSION,
-						type: PAYLOAD_TYPES.error,
+        if (request.method !== PROTOCOL_METHOD) {
+            return new Response(
+                JSON.stringify(
+                    {
+                        enzastdlib: PROTOCOL_VERSION,
+                        type: PAYLOAD_TYPES.error,
 
-						name: 'BadResource',
-						message:
-							`bad request to server (invalid method '${request.method}', method must be '${PROTOCOL_METHOD}')`,
-					} satisfies Error,
-				),
-				{
-					status: PROTOCOL_RESPONSES.invalid_method,
-				},
-			);
-		}
+                        name: 'BadResource',
+                        message:
+                            `bad request to server (invalid method '${request.method}', method must be '${PROTOCOL_METHOD}')`,
+                    } satisfies Error,
+                ),
+                {
+                    status: PROTOCOL_RESPONSES.invalid_method,
+                },
+            );
+        }
 
-		const payload = await request.json();
+        const payload = await request.json();
 
-		const response = await processPayload(payload);
-		if (response === undefined) {
-			// NOTE: Clients should ignore any form of body associated with no response payloads.
-			return new Response(null, {
-				status: PROTOCOL_RESPONSES.successful_no_response,
-			});
-		}
+        const response = await processPayload(payload);
+        if (response === undefined) {
+            // NOTE: Clients should ignore any form of body associated with no response payloads.
+            return new Response(null, {
+                status: PROTOCOL_RESPONSES.successful_no_response,
+            });
+        }
 
-		return new Response(JSON.stringify(response), {
-			status: PROTOCOL_RESPONSES.successful_call,
-		});
-	}
+        return new Response(JSON.stringify(response), {
+            status: PROTOCOL_RESPONSES.successful_call,
+        });
+    }
 
-	const server: HTTPServer = {
-		closed: true,
+    const server: HTTPServer = {
+        closed: true,
 
-		close: () => {
-			if (!controller) {
-				throw new Deno.errors.BadResource(
-					'bad dispatch to \'HTTPServer.close\' (server is already closed)',
-				);
-			}
+        close: () => {
+            if (!controller) {
+                throw new Deno.errors.BadResource(
+                    'bad dispatch to \'HTTPServer.close\' (server is already closed)',
+                );
+            }
 
-			controller.abort();
+            controller.abort();
 
-			controller = null;
-			// @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
-			server.closed = true;
-		},
+            controller = null;
+            // @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
+            server.closed = true;
+        },
 
-		serve: () => {
-			if (controller) {
-				throw new Deno.errors.BadResource(
-					'bad dispatch to \'HTTPServer.close\' (server is already serving)',
-				);
-			}
+        serve: () => {
+            if (controller) {
+                throw new Deno.errors.BadResource(
+                    'bad dispatch to \'HTTPServer.close\' (server is already serving)',
+                );
+            }
 
-			return new Promise((resolve, _reject) => {
-				controller = new AbortController();
+            return new Promise((resolve, _reject) => {
+                controller = new AbortController();
 
-				serveHTTP(onRequest, {
-					...http,
-					signal: controller.signal,
+                serveHTTP(onRequest, {
+                    ...http,
+                    signal: controller.signal,
 
-					onListen: (params) => {
-						resolve(params);
+                    onListen: (params) => {
+                        resolve(params);
 
-						// @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
-						server.closed = false;
-					},
-				});
-			});
-		},
-	};
+                        // @ts-ignore - HACK: `readonly` is only for the public API, not the internal.
+                        server.closed = false;
+                    },
+                });
+            });
+        },
+    };
 
-	return server;
+    return server;
 }

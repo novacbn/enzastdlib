@@ -8,12 +8,12 @@
  * @private
  */
 type TypedEventListener<Event extends CustomEvent> =
-	| ((
-		evt: Event,
-	) => void | Promise<void>)
-	| {
-		handleEvent(evt: Event): void | Promise<void>;
-	};
+    | ((
+        evt: Event,
+    ) => void | Promise<void>)
+    | {
+        handleEvent(evt: Event): void | Promise<void>;
+    };
 
 /**
  * Represents a record of event names associated with their `CustomEvent`-derived
@@ -93,132 +93,132 @@ export type TypedEventRecord = Record<string, CustomEvent>;
  * ```
  */
 export class TypedEventTarget<EventRecord extends TypedEventRecord>
-	extends EventTarget {
-	/**
-	 * Appends an event listener for events whose type attribute value is type. The
-	 * callback argument sets the callback that will be invoked when the event is
-	 * dispatched.
-	 *
-	 * The options argument sets listener-specific options. For compatibility this
-	 * can be a boolean, in which case the method behaves exactly as if the value was
-	 * specified as options's capture.
-	 *
-	 * When set to true, options's capture prevents callback from being invoked when
-	 * the event's eventPhase attribute value is BUBBLING_PHASE. When false (or not present),
-	 * callback will not be invoked when event's eventPhase attribute value is
-	 * CAPTURING_PHASE. Either way, callback will be invoked if event's eventPhase
-	 * attribute value is AT_TARGET.
-	 *
-	 * When set to true, options's passive indicates that the callback will not
-	 * cancel the event by invoking preventDefault(). This is used to enable performance
-	 * optimizations described in § 2.8 Observing event listeners.
-	 *
-	 * When set to true, options's once indicates that the callback will only be
-	 * invoked once after which the event listener will be removed.
-	 *
-	 * The event listener is appended to target's event listener list and is not
-	 * appended if it has the same type, callback, and capture.
-	 *
-	 * @param type
-	 * @param listener
-	 * @param options
-	 *
-	 * @example
-	 * ```typescript
-	 * import { TypedEventTarget } from 'https://deno.land/x/enzastdlib/events/mod.ts';
-	 *
-	 * type MyEvents = {
-	 *     myEvent: CustomEvent<{ myValue: number }>;
-	 * };
-	 *
-	 * const event_target = new TypedEventTarget<MyEvents>();
-	 *
-	 * event_target.addEventListener(
-	 *     'myEvent',
-	 *     (event) => console.log(event.detail.myValue),
-	 * );
-	 * ```
-	 */
-	addEventListener<Type extends keyof EventRecord>(
-		type: Type,
-		listener: TypedEventListener<EventRecord[Type]> | null,
-		options?: boolean | AddEventListenerOptions | undefined,
-	): void {
-		super.addEventListener(
-			type as string,
-			// @ts-ignore - HACK: Unclear why TypeScript is complaining
-			// `EventObject` be able to to be initialized with something other
-			// than an `Event` decendent. We have it extending `Event`...
-			listener,
-			options,
-		);
-	}
+    extends EventTarget {
+    /**
+     * Appends an event listener for events whose type attribute value is type. The
+     * callback argument sets the callback that will be invoked when the event is
+     * dispatched.
+     *
+     * The options argument sets listener-specific options. For compatibility this
+     * can be a boolean, in which case the method behaves exactly as if the value was
+     * specified as options's capture.
+     *
+     * When set to true, options's capture prevents callback from being invoked when
+     * the event's eventPhase attribute value is BUBBLING_PHASE. When false (or not present),
+     * callback will not be invoked when event's eventPhase attribute value is
+     * CAPTURING_PHASE. Either way, callback will be invoked if event's eventPhase
+     * attribute value is AT_TARGET.
+     *
+     * When set to true, options's passive indicates that the callback will not
+     * cancel the event by invoking preventDefault(). This is used to enable performance
+     * optimizations described in § 2.8 Observing event listeners.
+     *
+     * When set to true, options's once indicates that the callback will only be
+     * invoked once after which the event listener will be removed.
+     *
+     * The event listener is appended to target's event listener list and is not
+     * appended if it has the same type, callback, and capture.
+     *
+     * @param type
+     * @param listener
+     * @param options
+     *
+     * @example
+     * ```typescript
+     * import { TypedEventTarget } from 'https://deno.land/x/enzastdlib/events/mod.ts';
+     *
+     * type MyEvents = {
+     *     myEvent: CustomEvent<{ myValue: number }>;
+     * };
+     *
+     * const event_target = new TypedEventTarget<MyEvents>();
+     *
+     * event_target.addEventListener(
+     *     'myEvent',
+     *     (event) => console.log(event.detail.myValue),
+     * );
+     * ```
+     */
+    addEventListener<Type extends keyof EventRecord>(
+        type: Type,
+        listener: TypedEventListener<EventRecord[Type]> | null,
+        options?: boolean | AddEventListenerOptions | undefined,
+    ): void {
+        super.addEventListener(
+            type as string,
+            // @ts-ignore - HACK: Unclear why TypeScript is complaining
+            // `EventObject` be able to to be initialized with something other
+            // than an `Event` decendent. We have it extending `Event`...
+            listener,
+            options,
+        );
+    }
 
-	/**
-	 * Dispatches a synthetic event event to target and returns true if either event's
-	 * cancelable attribute value is false or its preventDefault() method was not
-	 * invoked, and false otherwise.
-	 *
-	 * @param event
-	 * @returns
-	 *
-	 * @example
-	 * ```typescript
-	 * import { TypedEventTarget } from 'https://deno.land/x/enzastdlib/events/mod.ts';
-	 *
-	 * const event_target = new TypedEventTarget<
-	 *     { myEvent: CustomEvent<{ myValue: number }> }
-	 * >();
-	 *
-	 * const event = new CustomEvent('myEvent', { detail: { myValue: 1 } });
-	 *
-	 * event_target.addEventListener('myEvent', console.log);
-	 *
-	 * event_target.dispatchEvent(event); // `{ myValue: 1 }`
-	 * ```
-	 */
-	dispatchEvent<Event extends EventRecord[keyof EventRecord]>(
-		event: Event,
-	): boolean {
-		return super.dispatchEvent(event);
-	}
+    /**
+     * Dispatches a synthetic event event to target and returns true if either event's
+     * cancelable attribute value is false or its preventDefault() method was not
+     * invoked, and false otherwise.
+     *
+     * @param event
+     * @returns
+     *
+     * @example
+     * ```typescript
+     * import { TypedEventTarget } from 'https://deno.land/x/enzastdlib/events/mod.ts';
+     *
+     * const event_target = new TypedEventTarget<
+     *     { myEvent: CustomEvent<{ myValue: number }> }
+     * >();
+     *
+     * const event = new CustomEvent('myEvent', { detail: { myValue: 1 } });
+     *
+     * event_target.addEventListener('myEvent', console.log);
+     *
+     * event_target.dispatchEvent(event); // `{ myValue: 1 }`
+     * ```
+     */
+    dispatchEvent<Event extends EventRecord[keyof EventRecord]>(
+        event: Event,
+    ): boolean {
+        return super.dispatchEvent(event);
+    }
 
-	/**
-	 * Removes the event listener in target's event listener list with the same type,
-	 * callback, and options.
-	 *
-	 * @param type
-	 * @param listener
-	 * @param options
-	 *
-	 * @example
-	 * ```typescript
-	 * import { TypedEventTarget } from 'https://deno.land/x/enzastdlib/events/mod.ts';
-	 *
-	 * type MyEvents = {
-	 *     myEvent: CustomEvent<{ myValue: number }>;
-	 * };
-	 *
-	 * function onMyEvent(event: MyEvents['myEvent']): void {
-	 *     console.log(event.detail.myValue);
-	 * }
-	 *
-	 * const event_target = new TypedEventTarget<MyEvents>();
-	 *
-	 * event_target.addEventListener('myEvent', onMyEvent);
-	 * event_target.removeEventListener('myEvent', onMyEvent);
-	 * ```
-	 */
-	removeEventListener<Type extends keyof EventRecord>(
-		type: Type,
-		listener: TypedEventListener<EventRecord[Type]> | null,
-		options?: boolean | EventListenerOptions | undefined,
-	): void {
-		super.removeEventListener(
-			type as string,
-			// @ts-ignore - HACK: Ditto as above.
-			listener,
-			options,
-		);
-	}
+    /**
+     * Removes the event listener in target's event listener list with the same type,
+     * callback, and options.
+     *
+     * @param type
+     * @param listener
+     * @param options
+     *
+     * @example
+     * ```typescript
+     * import { TypedEventTarget } from 'https://deno.land/x/enzastdlib/events/mod.ts';
+     *
+     * type MyEvents = {
+     *     myEvent: CustomEvent<{ myValue: number }>;
+     * };
+     *
+     * function onMyEvent(event: MyEvents['myEvent']): void {
+     *     console.log(event.detail.myValue);
+     * }
+     *
+     * const event_target = new TypedEventTarget<MyEvents>();
+     *
+     * event_target.addEventListener('myEvent', onMyEvent);
+     * event_target.removeEventListener('myEvent', onMyEvent);
+     * ```
+     */
+    removeEventListener<Type extends keyof EventRecord>(
+        type: Type,
+        listener: TypedEventListener<EventRecord[Type]> | null,
+        options?: boolean | EventListenerOptions | undefined,
+    ): void {
+        super.removeEventListener(
+            type as string,
+            // @ts-ignore - HACK: Ditto as above.
+            listener,
+            options,
+        );
+    }
 }

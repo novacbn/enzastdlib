@@ -1,8 +1,8 @@
 import type { FromSchema } from '../vendor/@ThomasAribart-json-schema-to-ts.ts';
 
 import type {
-	JSONSchema as JSONSchema201909,
-	TypeName,
+    JSONSchema as JSONSchema201909,
+    TypeName,
 } from '../vendor/@jrylan-json-schema-typed.ts';
 
 /**
@@ -116,12 +116,12 @@ export type JSONSchemaString = JSONSchema201909.String;
  * ```
  */
 export type JSONSchema =
-	| JSONSchemaArray
-	| JSONSchemaBoolean
-	| JSONSchemaNull
-	| JSONSchemaNumber
-	| JSONSchemaObject
-	| JSONSchemaString;
+    | JSONSchemaArray
+    | JSONSchemaBoolean
+    | JSONSchemaNull
+    | JSONSchemaNumber
+    | JSONSchemaObject
+    | JSONSchemaString;
 
 /**
  * Represents a union of all possible type names supported by JSON Schema.
@@ -163,6 +163,6 @@ export type JSONSchemaTypes = `${TypeName}`;
  * ```
  */
 export type typeofschema<Schema extends JSONSchema> = FromSchema<
-	// @ts-ignore - HACK: They're both draft 2019-09 based, they just have mismatched types.
-	Schema
+    // @ts-ignore - HACK: They're both draft 2019-09 based, they just have mismatched types.
+    Schema
 >;

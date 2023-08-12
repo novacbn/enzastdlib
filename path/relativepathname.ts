@@ -24,5 +24,5 @@ const { relative } = posix;
  * ```
  */
 export function relativePathname(from: URL, to: URL): string {
-	return relative(from.pathname, to.pathname);
+    return relative(from.pathname, to.pathname);
 }

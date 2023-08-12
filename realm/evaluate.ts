@@ -6,19 +6,19 @@ import { generateGlobalsBlockList } from './blocklist.ts';
  * Represents all the available options passable to `evaluateModule`.
  */
 export interface EvaluateModuleOptions<GlobalThisType = unknown> {
-	/**
-	 * Represents the `globalThis` global object exposed to the execution environment.
-	 *
-	 * > **NOTE**: All members of this object will be exposed as globals to the evaluated
-	 * code.
-	 */
-	readonly globalThis?: GlobalThisType;
+    /**
+     * Represents the `globalThis` global object exposed to the execution environment.
+     *
+     * > **NOTE**: All members of this object will be exposed as globals to the evaluated
+     * code.
+     */
+    readonly globalThis?: GlobalThisType;
 
-	/**
-	 * Represents if the environment should set Deno runtime globals not found in
-	 * `EvaluateModuleOptions.globalThis` to `undefined` to ensure proper sandboxing.
-	 */
-	readonly useBlockList?: boolean;
+    /**
+     * Represents if the environment should set Deno runtime globals not found in
+     * `EvaluateModuleOptions.globalThis` to `undefined` to ensure proper sandboxing.
+     */
+    readonly useBlockList?: boolean;
 }
 
 /**
@@ -35,30 +35,30 @@ export interface EvaluateModuleOptions<GlobalThisType = unknown> {
  * @returns
  */
 export function evaluateModule<
-	Exports = unknown,
-	GlobalThisType = unknown,
+    Exports = unknown,
+    GlobalThisType = unknown,
 >(
-	code: string,
-	options: EvaluateModuleOptions<GlobalThisType> = {},
+    code: string,
+    options: EvaluateModuleOptions<GlobalThisType> = {},
 ): Promise<Exports> {
-	const { globalThis = {}, useBlockList = true } = options;
+    const { globalThis = {}, useBlockList = true } = options;
 
-	const keys = Object.keys(globalThis as UnknownObject);
-	const values = Object.values(globalThis as UnknownObject);
+    const keys = Object.keys(globalThis as UnknownObject);
+    const values = Object.values(globalThis as UnknownObject);
 
-	const blocklist_keys = useBlockList
-		? generateGlobalsBlockList(globalThis)
-		: [];
-	const blocklist_values = blocklist_keys.map(() => undefined);
+    const blocklist_keys = useBlockList
+        ? generateGlobalsBlockList(globalThis)
+        : [];
+    const blocklist_values = blocklist_keys.map(() => undefined);
 
-	const func = new Function(
-		...blocklist_keys,
-		...keys,
-		'globalThis',
-		`return (async () => {
+    const func = new Function(
+        ...blocklist_keys,
+        ...keys,
+        'globalThis',
+        `return (async () => {
 ${code}
         })`,
-	)(...blocklist_values, ...values, globalThis);
+    )(...blocklist_values, ...values, globalThis);
 
-	return func();
+    return func();
 }

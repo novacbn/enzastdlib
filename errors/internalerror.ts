@@ -12,5 +12,5 @@
  * ```
  */
 export class InternalError extends Error {
-	readonly name = InternalError.name;
+    readonly name = InternalError.name;
 }

@@ -11,44 +11,44 @@ import type { UnknownObject } from '../collections/mod.ts';
  * @private
  */
 const BLOCKLIST_DENO = [
-	'Deno',
+    'Deno',
 
-	'self',
-	'window',
+    'self',
+    'window',
 
-	'caches',
-	'crypto',
-	'navigator',
-	'localStorage',
-	'sessionStorage',
+    'caches',
+    'crypto',
+    'navigator',
+    'localStorage',
+    'sessionStorage',
 
-	'alert',
-	'confirm',
-	'prompt',
+    'alert',
+    'confirm',
+    'prompt',
 
-	'clearInterval',
-	'clearTimeout',
-	'setInterval',
-	'setTimeout',
-	'queueMicrotask',
+    'clearInterval',
+    'clearTimeout',
+    'setInterval',
+    'setTimeout',
+    'queueMicrotask',
 
-	'clear',
-	'close',
-	'closed',
+    'clear',
+    'close',
+    'closed',
 
-	'onbeforeunload',
-	'onerror',
-	'onunhandledrejection',
-	'onload',
-	'onunload',
+    'onbeforeunload',
+    'onerror',
+    'onunhandledrejection',
+    'onload',
+    'onunload',
 
-	'atob',
-	'btoa',
-	'fetch',
-	'getParent',
-	'performance',
-	'reportError',
-	'structuredClone',
+    'atob',
+    'btoa',
+    'fetch',
+    'getParent',
+    'performance',
+    'reportError',
+    'structuredClone',
 ] as const;
 
 /**
@@ -60,11 +60,11 @@ const BLOCKLIST_DENO = [
  * @param globals
  */
 export function generateGlobalsBlockList(globals: unknown): string[] {
-	const blocklist = [];
+    const blocklist = [];
 
-	for (const member of BLOCKLIST_DENO) {
-		if (!(member in (globals as UnknownObject))) blocklist.push(member);
-	}
+    for (const member of BLOCKLIST_DENO) {
+        if (!(member in (globals as UnknownObject))) blocklist.push(member);
+    }
 
-	return blocklist;
+    return blocklist;
 }

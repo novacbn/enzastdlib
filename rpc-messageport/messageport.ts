@@ -7,30 +7,30 @@
  * vs `Worker`.
  */
 export interface MessagePortLike {
-	readonly addEventListener: (
-		event: 'message',
-		listener: (event: MessageEvent) => void,
-		options?: AddEventListenerOptions,
-	) => void;
+    readonly addEventListener: (
+        event: 'message',
+        listener: (event: MessageEvent) => void,
+        options?: AddEventListenerOptions,
+    ) => void;
 
-	readonly postMessage:
-		| ((
-			// HACK: `MessagePort.postMessage` accepts any type for its messages, so
-			// this `any` fits here.
-			//
-			// deno-lint-ignore no-explicit-any
-			message: any,
-			transfer?: Transferable,
-		) => void)
-		| ((
-			// deno-lint-ignore no-explicit-any
-			message: any,
-			options?: StructuredSerializeOptions,
-		) => void);
+    readonly postMessage:
+        | ((
+            // HACK: `MessagePort.postMessage` accepts any type for its messages, so
+            // this `any` fits here.
+            //
+            // deno-lint-ignore no-explicit-any
+            message: any,
+            transfer?: Transferable,
+        ) => void)
+        | ((
+            // deno-lint-ignore no-explicit-any
+            message: any,
+            options?: StructuredSerializeOptions,
+        ) => void);
 
-	readonly removeEventListener: (
-		event: 'message',
-		listener: (event: MessageEvent) => void,
-		options?: EventListenerOptions,
-	) => void;
+    readonly removeEventListener: (
+        event: 'message',
+        listener: (event: MessageEvent) => void,
+        options?: EventListenerOptions,
+    ) => void;
 }

@@ -1,10 +1,10 @@
 import { parse } from '../vendor/@CesiumLabs-json5.ts';
 
 import type {
-	JSON5Array,
-	JSON5Object,
-	JSON5TypeNames,
-	JSON5Types,
+    JSON5Array,
+    JSON5Object,
+    JSON5TypeNames,
+    JSON5Types,
 } from './types.ts';
 import { JSON5_TYPE_NAMES } from './types.ts';
 
@@ -34,8 +34,8 @@ import { JSON5_TYPE_NAMES } from './types.ts';
  * ```
  */
 export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['array'],
-	expression: string,
+    type: (typeof JSON5_TYPE_NAMES)['array'],
+    expression: string,
 ): JSON5Array;
 /**
  * Returns an expression parsed following a simplified JSON5 syntax.
@@ -59,8 +59,8 @@ export function parseJSON5Expression(
  * ```
  */
 export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['boolean'],
-	expression: string,
+    type: (typeof JSON5_TYPE_NAMES)['boolean'],
+    expression: string,
 ): boolean;
 /**
  * Returns an expression parsed following a simplified JSON5 syntax.
@@ -84,8 +84,8 @@ export function parseJSON5Expression(
  * ```
  */
 export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['null'],
-	expression: string,
+    type: (typeof JSON5_TYPE_NAMES)['null'],
+    expression: string,
 ): null;
 /**
  * Returns an expression parsed following a simplified JSON5 syntax.
@@ -109,8 +109,8 @@ export function parseJSON5Expression(
  * ```
  */
 export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['number'],
-	expression: string,
+    type: (typeof JSON5_TYPE_NAMES)['number'],
+    expression: string,
 ): number;
 /**
  * Returns an expression parsed following a simplified JSON5 syntax.
@@ -138,8 +138,8 @@ export function parseJSON5Expression(
  * ```
  */
 export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['object'],
-	expression: string,
+    type: (typeof JSON5_TYPE_NAMES)['object'],
+    expression: string,
 ): JSON5Object;
 /**
  * Returns an expression parsed following a simplified JSON5 syntax.
@@ -163,71 +163,71 @@ export function parseJSON5Expression(
  * ```
  */
 export function parseJSON5Expression(
-	type: (typeof JSON5_TYPE_NAMES)['string'],
-	expression: string,
+    type: (typeof JSON5_TYPE_NAMES)['string'],
+    expression: string,
 ): string;
 export function parseJSON5Expression(
-	type: JSON5TypeNames,
-	expression: string,
+    type: JSON5TypeNames,
+    expression: string,
 ): JSON5Types {
-	switch (type) {
-		case JSON5_TYPE_NAMES.array:
-			return parse(`[${expression}]`);
+    switch (type) {
+        case JSON5_TYPE_NAMES.array:
+            return parse(`[${expression}]`);
 
-		case JSON5_TYPE_NAMES.boolean:
-			if (expression === 'true') {
-				return true;
-			} else if (expression === 'false') {
-				return false;
-			}
+        case JSON5_TYPE_NAMES.boolean:
+            if (expression === 'true') {
+                return true;
+            } else if (expression === 'false') {
+                return false;
+            }
 
-			// HACK: We would need to implement a proper parser to provide
-			// the column and line details... so let's just return the expression
-			// back.
+            // HACK: We would need to implement a proper parser to provide
+            // the column and line details... so let's just return the expression
+            // back.
 
-			throw SyntaxError(
-				`JSON5: invalid expression '${expression}'`,
-			);
+            throw SyntaxError(
+                `JSON5: invalid expression '${expression}'`,
+            );
 
-		case JSON5_TYPE_NAMES.null:
-			if (expression === 'null') {
-				return null;
-			}
+        case JSON5_TYPE_NAMES.null:
+            if (expression === 'null') {
+                return null;
+            }
 
-			throw SyntaxError(
-				`JSON5: invalid expression '${expression}'`,
-			);
+            throw SyntaxError(
+                `JSON5: invalid expression '${expression}'`,
+            );
 
-		case JSON5_TYPE_NAMES.number: {
-			if (expression === 'NaN') {
-				return NaN;
-			} else if (expression === 'Infinity') {
-				return Number.POSITIVE_INFINITY;
-			} else if (expression === '-Infinity') {
-				return Number.NEGATIVE_INFINITY;
-			}
+        case JSON5_TYPE_NAMES.number: {
+            if (expression === 'NaN') {
+                return NaN;
+            } else if (expression === 'Infinity') {
+                return Number.POSITIVE_INFINITY;
+            } else if (expression === '-Infinity') {
+                return Number.NEGATIVE_INFINITY;
+            }
 
-			const parsed = expression.includes('.')
-				? parseFloat(expression)
-				: parseInt(expression);
+            const parsed = expression.includes('.')
+                ? parseFloat(expression)
+                : parseInt(expression);
 
-			if (isNaN(parsed)) {
-				throw SyntaxError(
-					`JSON5: invalid expression '${expression}'`,
-				);
-			}
+            if (isNaN(parsed)) {
+                throw SyntaxError(
+                    `JSON5: invalid expression '${expression}'`,
+                );
+            }
 
-			return parsed;
-		}
+            return parsed;
+        }
 
-		case JSON5_TYPE_NAMES.object:
-			return parse(`{${expression}}`);
+        case JSON5_TYPE_NAMES.object:
+            return parse(`{${expression}}`);
 
-		case JSON5_TYPE_NAMES.string:
-			return expression;
-	}
+        case JSON5_TYPE_NAMES.string:
+            return expression;
+    }
 
-	throw new TypeError(
-		`bad argument #1 to 'parseJSON5Expression' (unsupported type '${type}')`,
-	);
+    throw new TypeError(
+        `bad argument #1 to 'parseJSON5Expression' (unsupported type '${type}')`,
+    );
 }

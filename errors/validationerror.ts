@@ -11,5 +11,5 @@
  * ```
  */
 export class ValidationError extends Error {
-	readonly name = ValidationError.name;
+    readonly name = ValidationError.name;
 }

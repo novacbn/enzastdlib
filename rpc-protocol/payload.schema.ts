@@ -5,33 +5,33 @@ import { PAYLOAD_TYPES } from './payload.ts';
 import { PROTOCOL_VERSION } from './protocol.ts';
 
 export const SCHEMA_PAYLOAD = {
-	type: 'object',
-	required: ['enzastdlib', 'type'],
+    type: 'object',
+    required: ['enzastdlib', 'type'],
 
-	properties: {
-		enzastdlib: {
-			type: 'string',
-			enum: [PROTOCOL_VERSION],
-		},
+    properties: {
+        enzastdlib: {
+            type: 'string',
+            enum: [PROTOCOL_VERSION],
+        },
 
-		type: {
-			type: 'string',
-			enum: [
-				PAYLOAD_TYPES.error,
-				PAYLOAD_TYPES.notification,
-				PAYLOAD_TYPES.procedure,
-				PAYLOAD_TYPES.response,
-			],
-		},
+        type: {
+            type: 'string',
+            enum: [
+                PAYLOAD_TYPES.error,
+                PAYLOAD_TYPES.notification,
+                PAYLOAD_TYPES.procedure,
+                PAYLOAD_TYPES.response,
+            ],
+        },
 
-		id: {
-			type: 'string',
-		},
+        id: {
+            type: 'string',
+        },
 
-		metadata: {
-			type: 'object',
-		},
-	},
+        metadata: {
+            type: 'object',
+        },
+    },
 } as const satisfies JSONSchema;
 
 export type Payload = typeofschema<typeof SCHEMA_PAYLOAD>;
