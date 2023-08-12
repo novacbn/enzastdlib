@@ -8,6 +8,12 @@ import {
 	serveTls as stdlibServeTls,
 } from '../vendor/@deno-std-http.ts';
 
+/**
+ * Represents the global `serve` HTTP server API that is only available when Deno is
+ * passed the `--unstable` flag.
+ *
+ * @private
+ */
 declare const serve:
 	| ((options: ServeInit | ServeTlsInit, handler: Handler) => Promise<void>)
 	| undefined;

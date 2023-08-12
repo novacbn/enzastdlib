@@ -1,14 +1,23 @@
+/**
+ * Represents the prefix used to recognize command line flag names.
+ *
+ * @private
+ */
 const PREFIX_FLAG = '--';
 
+/**
+ * Represents a record of command line flags grouped by their names.
+ *
+ * @private
+ */
 type FlagsRecord = Record<string, string | undefined>;
 
 /**
- * Processes the value of `Deno.args` by associating any `string`
- * value that immediately comes after a `string` prefixed by `--`
- * in a record.
+ * Processes the value of `Deno.args` by associating any `string` value that
+ * immediately comes after a `string` prefixed by `--` in a record.
  *
- * Otherwise all unassociated `string` values are collected in the
- * `_` key in the record.
+ * Otherwise all unassociated `string` values are collected in the `_` key
+ * in the record.
  *
  * @private
  *

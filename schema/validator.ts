@@ -22,13 +22,13 @@ export interface Validator<Type = unknown> {
 	 * ```typescript
 	 * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
 	 *
-	 * const MY_STRING_SCHEMA = {
+	 * export const MY_STRING_SCHEMA = {
 	 *     type: 'string',
 	 *
 	 *     minLength: 1,
 	 * } as const satisfies JSONSchema;
 	 *
-	 * type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
+	 * export type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
 	 * ```
 	 *
 	 * **mod.ts**
@@ -71,13 +71,13 @@ export interface Validator<Type = unknown> {
 	 * ```typescript
 	 * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
 	 *
-	 * const MY_STRING_SCHEMA = {
+	 * export const MY_STRING_SCHEMA = {
 	 *     type: 'string',
 	 *
 	 *     minLength: 1,
 	 * } as const satisfies JSONSchema;
 	 *
-	 * type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
+	 * export type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
 	 * ```
 	 *
 	 * **mod.ts**
@@ -120,13 +120,13 @@ export interface Validator<Type = unknown> {
 	 * ```typescript
 	 * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
 	 *
-	 * const MY_STRING_SCHEMA = {
+	 * export const MY_STRING_SCHEMA = {
 	 *     type: 'string',
 	 *
 	 *     minLength: 1,
 	 * } as const satisfies JSONSchema;
 	 *
-	 * type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
+	 * export type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
 	 * ```
 	 *
 	 * **mod.ts**
@@ -143,7 +143,7 @@ export interface Validator<Type = unknown> {
 	 * assertEquals(
 	 *     validator.instanceOf('Hello World!'),
 	 *     true,
-	 * )
+	 * );
 	 *
 	 * assertThrows(
 	 *     () => validator.instanceOf(''),
@@ -171,13 +171,13 @@ export interface Validator<Type = unknown> {
  * ```typescript
  * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
  *
- * const MY_STRING_SCHEMA = {
+ * export const MY_STRING_SCHEMA = {
  *     type: 'string',
  *
  *     minLength: 1,
  * } as const satisfies JSONSchema;
  *
- * type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
+ * export type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
  * ```
  *
  * **mod.ts**

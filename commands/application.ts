@@ -30,10 +30,101 @@ import {
 	TEMPLATE_USAGE_COMMAND,
 } from './templates.ts';
 
+/**
+ * Represents a command line application made by `makeApplication`.
+ */
 export interface Application {
+	/**
+	 * Executes a subcommand based on the arguments passed. Then an exit code
+	 * is returned by the subcommand or safeguards which can be used when exiting
+	 * the application.
+	 *
+	 * @param argv
+	 * @returns
+	 *
+	 * @example
+	 * ```typescript
+	 * import { makeApplication } from 'https://deno.land/x/enzastdlib/commands/mod.ts';
+	 *
+	 * const application = makeApplication(...);
+	 *
+	 * const exit_code = await application.handleArgs(Deno.arg);
+	 * Deno.exit(exit_code);
+	 * ```
+	 */
 	readonly handleArgs: (argv?: string[]) => Promise<number>;
 }
 
+/**
+ * Makes a new `Application` for handling command line parsing and validation
+ * via JSON Schema.
+ *
+ * @param options
+ * @returns
+ *
+ * @example
+ * **schema.ts**
+ * ```typescript
+ * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
+ *
+ * export const MY_STRING_SCHEMA = {
+ *     type: 'object',
+ *
+ *     properties: {
+ *         mystring: {
+ *             type: 'string',
+ *
+ *             minLength: 1,
+ *         },
+ *     },
+ * } as const satisfies JSONSchema;
+ *
+ * export type MyStringOptions = typeofschema<typeof MY_STRING_SCHEMA>;
+ * ```
+ *
+ * **mycommand.ts**
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { schema } from 'https://deno.land/x/enzastdlib/commands/mod.ts';
+ *
+ * import type { MyStringOptions } from './schema.ts';
+ * import { MY_STRING_SCHEMA } from './schema.ts';
+ *
+ * schema(mycommand, MY_STRING_SCHEMA);
+ * export function mycommand(options: MyStringOptions): void {
+ *     assertEquals(
+ *         options,
+ *         { mystring: 'Hello World!' },
+ *     );
+ * }
+ * ```
+ *
+ * **mod.ts**
+ * ```typescript
+ * import { makeApplication } from 'https://deno.land/x/enzastdlib/commands/mod.ts';
+ *
+ * import { mycommand } from './mycommand.ts';
+ *
+ * const application = makeApplication({
+ *     // NOTE: If we compiled your application via `deno compile` then you should
+ *     // use your binary's name here.
+ *     name: 'deno run ./mod.ts',
+ *     description: 'I run cool subcommands!',
+ *
+ *     commands: {
+ *         mycommand,
+ *     },
+ * });
+ *
+ * const exit_code = await application.handleArgs(Deno.arg);
+ * Deno.exit(exit_code);
+ * ```
+ *
+ * **terminal**
+ * ```bash
+ * deno run ./mod.ts --mystring "Hello World!"
+ * ```
+ */
 export function makeApplication(
 	options: ApplicationOptions,
 ): Application {

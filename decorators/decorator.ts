@@ -1,16 +1,35 @@
 import type { FunctionBox } from './function.ts';
 
 /**
- * Represents an object of methods that handles metadata on functions.
+ * Represents a decorator for accessing scoped metadata on functions made
+ * by `makeDecorator`.
  */
 export interface Decorator<
 	Func extends FunctionBox,
 	Value,
 > {
+	/**
+	 * Returns the metadata associated with the specified `func`, if any.
+	 *
+	 * @param func
+	 * @returns
+	 */
 	get(func: Func): Value | undefined;
 
+	/**
+	 * Returns if the specified `func` has any metadata associated with it.
+	 *
+	 * @param func
+	 * @returns
+	 */
 	has(func: Func): boolean;
 
+	/**
+	 * Sets the metadata associated with the specified `func` to the supplied `value`.
+	 *
+	 * @param func
+	 * @param value
+	 */
 	set(func: Func, value: Value): void;
 }
 
@@ -24,11 +43,41 @@ export type DecoratorCallback<Func extends FunctionBox, Value> = (
 ) => void;
 
 /**
- * Returns a `Decorator` instance that provides for handling namespaced
- * metadata on functions.
+ * Returns a `Decorator` instance that provides for handling scoped metadata
+ * on functions.
  *
  * @param func
  * @returns
+ *
+ * @example
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { makeDecorator } from 'https://deno.land/x/enzastdlib/decorators/mod.ts';
+ *
+ * type MyDecoratorValue = number;
+ *
+ * const mydecorator = makeValidator<MyDecoratorValue>((func, value) => {
+ *     // Our `Decorator` object provides simplified access to scoped metadata. So
+ *     // we can use it to assign the initialization metadata to the function.
+ *     mydecorator.set(func, value);
+ * });
+ *
+ * // We are initializing the decorator onto our desired function with some metadata.
+ * mydecorator(my_func, 42);
+ * function my_func() {
+ *     console.log('Hello World!');
+ * }
+ *
+ * assertEquals(
+ *     mydecorator.has(my_func),
+ *     true,
+ * );
+ *
+ * assertEquals(
+ *     mydecorator.get(my_func),
+ *     42,
+ * );
+ * ```
  */
 export function makeDecorator<
 	InputValue,

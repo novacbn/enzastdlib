@@ -15,12 +15,25 @@ export interface EvaluateModuleOptions<GlobalThisType = unknown> {
 	readonly globalThis?: GlobalThisType;
 
 	/**
-	 * Represents if the environment should set Deno runtime globals not found in `EvaluateModuleOptions.globalThis`
-	 * to `undefined` to ensure proper sandboxing.
+	 * Represents if the environment should set Deno runtime globals not found in
+	 * `EvaluateModuleOptions.globalThis` to `undefined` to ensure proper sandboxing.
 	 */
 	readonly useBlockList?: boolean;
 }
 
+/**
+ * Evaluates code in a sandbox environment with the specified options.
+ *
+ * > **WARNING**: The sandbox environment works by setting a blocklist of default Deno
+ * > globals to `undefined` when executed. It can be escaped if the blocklist is not
+ * > updated when members are added in newer Deno versions.
+ *
+ * @private
+ *
+ * @param code
+ * @param options
+ * @returns
+ */
 export function evaluateModule<
 	Exports = unknown,
 	GlobalThisType = unknown,

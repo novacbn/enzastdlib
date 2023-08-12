@@ -15,20 +15,59 @@ import { relativePathname } from '../path/mod.ts';
 
 const { extname } = posix;
 
+/**
+ * Represents the text found added to the beginning of every bundled payload.
+ *
+ * @private
+ */
 const BUNDLE_HEADER = '(function() {\n';
 
+/**
+ * Represents the text found added to the end of every bundled payload.
+ *
+ * @private
+ */
 const BUNDLE_FOOTER = '\n})();';
 
+/**
+ * Represents the regular expression used to detect indentation at the beginning
+ * of every line.
+ *
+ * @private
+ */
 const EXPRESSION_INDENT = /^(\s\s\s\s)/gm;
 
+/**
+ * Represents the extensions supported for code files by the bundler.
+ */
 export const CODE_EXTENSIONS = {
+	/**
+	 * Represents the extension used for JavaScript files.
+	 */
 	javascript: '.js',
 
+	/**
+	 * Represents the extension used for TypeScript files.
+	 */
 	typescript: '.ts',
 } as const;
 
+/**
+ * Represents a union of extensions supported for code files by the bundler.
+ */
 export type CodeExtensions = ValueOf<typeof CODE_EXTENSIONS>;
 
+/**
+ * Applies a few monkeypatches to a resulting bundle code.
+ *
+ * - Removes the function closure that the bundler generates when ran in the "IIFE"
+ * format.
+ * - Removes the first level of indentation from the aforementioned function enclosure.
+ * - Trims any dangling whitespace and newlines from the beginning and end of the bundle.
+ *
+ * @param code
+ * @returns
+ */
 function applyMonkeyPatches(code: string): string {
 	// We just want the raw bundled code, since we are going to use a
 	// custom IIFE when we go to execute it.
@@ -40,6 +79,15 @@ function applyMonkeyPatches(code: string): string {
 		.trim();
 }
 
+/**
+ * Bundles a given code entry point specifier and all of its dependencies.
+ *
+ * @private
+ *
+ * @param specifier
+ * @param cwd
+ * @returns
+ */
 export async function bundleEntryPoint(
 	specifier: string | URL,
 	cwd?: string | URL,

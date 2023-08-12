@@ -10,6 +10,57 @@ import { makeValidator } from '../schema/mod.ts';
 
 type Options = Omit<LoadOptions, 'restrictEnvAccessTo'>;
 
+/**
+ * Returns `Error` objects of any validation errors that have occured regarding the
+ * specified environment variables in a dotenv file, if any.
+ *
+ * > **NOTE**: To specify environment variables to test you **MUST** supply a JSON
+ * > Schema that defines a top-level object.
+ *
+ * > **NOTE**: Only second-level keys are used for testing environment variables.
+ *
+ * @param schema
+ * @param options
+ * @returns
+ *
+ * @example
+ * **.env**
+ * ```bash
+ * MY_STRING='Hello World!'
+ * ```
+ *
+ * **schema.ts**
+ * ```typescript
+ * import type { JSONSchema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
+ *
+ * export const MY_STRING_SCHEMA = {
+ *     type: 'object',
+ *
+ *     properties: {
+ *         MY_STRING: {
+ *             type: 'string',
+ *
+ *             minLength: 1,
+ *         },
+ *     },
+ * } as const satisfies JSONSchema;
+ * ```
+ *
+ * **mod.ts**
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { testDotenv } from 'https://deno.land/x/enzastdlib/environment/mod.ts';
+ *
+ * import { MY_STRING_SCHEMA } from './schema.ts';
+ *
+ * assertEquals(
+ *     testDotenv(MY_STRING_SCHEMA, {
+ *         envPath: './.env',
+ *     }),
+ *     undefined,
+ * );
+ * ```
+ */
 export async function testDotenv(
 	schema: JSONSchemaObject,
 	options?: Options,
@@ -22,6 +73,60 @@ export async function testDotenv(
 	return validator.test(env);
 }
 
+/**
+ * Throws an exception if any validation errors occured regarding the specified environment
+ * variables in a dotenv file, otherwise returns the values of those environment variables.
+ *
+ * > **NOTE**: To specify environment variables to validate you **MUST** supply a JSON
+ * > Schema that defines a top-level object.
+ *
+ * > **NOTE**: Only second-level keys are used for validating environment variables.
+ *
+ * @param schema
+ * @param options
+ * @returns
+ *
+ * @example
+ * **.env**
+ * ```bash
+ * MY_STRING='Hello World!'
+ * ```
+ *
+ * **schema.ts**
+ * ```typescript
+ * import type { JSONSchema, typeofschema } from 'https://deno.land/x/enzastdlib/schema/mod.ts';
+ *
+ * export const MY_STRING_SCHEMA = {
+ *     type: 'object',
+ *
+ *     properties: {
+ *         MY_STRING: {
+ *             type: 'string',
+ *
+ *             minLength: 1,
+ *         },
+ *     },
+ * } as const satisfies JSONSchema;
+ *
+ * export type MyStringType = typeofschema<typeof MY_STRING_SCHEMA>;
+ * ```
+ *
+ * **mod.ts**
+ * ```typescript
+ * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
+ * import { validateDotenv } from 'https://deno.land/x/enzastdlib/environment/mod.ts';
+ *
+ * import type { MyStringType } from "./schema.ts";
+ * import { MY_STRING_SCHEMA } from './schema.ts';
+ *
+ * assertEquals(
+ *     validateDotenv<MyStringType>(MY_STRING_SCHEMA, {
+ *         envPath: './.env',
+ *     }),
+ *     { MY_STRING: 'Hello World!' },
+ * );
+ * ```
+ */
 export async function validateDotenv<Type>(
 	schema: JSONSchemaObject,
 	options?: Options,
