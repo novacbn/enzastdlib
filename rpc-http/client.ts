@@ -144,10 +144,7 @@ export type HTTPClient<
  * **mod.ts**
  * ```typescript
  * import { assertEquals } from 'https://deno.land/std/testing/asserts.ts';
- * import {
- *     PROTOCOL_PATHNAME_PROCEDURES,
- *     makeHTTPClient,
- * } from 'https://deno.land/x/enzastdlib/rpc-http/mod.ts';
+ * import { makeHTTPClient } from 'https://deno.land/x/enzastdlib/rpc-http/mod.ts';
  *
  * import type { add } from './add.procedure.ts';
  *
@@ -155,7 +152,8 @@ export type HTTPClient<
  *
  * const client = makeHTTPClient<MyRPCProcedures>({
  *     http: {
- *         endpoint: `http://example.domain${PROTOCOL_PATHNAME_PROCEDURES}`,
+ *         hostname: '127.0.0.1',
+ *         port: 8080,
  *     },
  * });
  *
